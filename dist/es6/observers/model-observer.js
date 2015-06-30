@@ -64,7 +64,7 @@ export class ModelObserver
                 default:
                 {
                     let propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
-                    if(!propertyDescriptor.get)
+                    if(propertyDescriptor.get && !propertyDescriptor.set)
                     {
                         let subscription = this.observerLocator.getObserver(model, property);
                         subscriptions.push(subscription);

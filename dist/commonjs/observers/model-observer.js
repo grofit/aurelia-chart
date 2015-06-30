@@ -80,7 +80,7 @@ var ModelObserver = (function () {
                     default:
                         {
                             var propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
-                            if (!propertyDescriptor.get) {
+                            if (propertyDescriptor.get && !propertyDescriptor.set) {
                                 var subscription = this.observerLocator.getObserver(model, property);
                                 subscriptions.push(subscription);
                             }
