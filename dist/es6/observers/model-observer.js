@@ -12,19 +12,18 @@ export class ModelObserver
         this.observerLocator = observerLocator;
     }
 
-    observe(model, onChange)
+    observe = (model, onChange) =>
     {
         var subscriptions = [];
         this._getAllSubscriptions(model, subscriptions);
 
-        function throttledHandler() {
-            console.log("THROTTLING BEGUN");
+        var throttledHandler = () => {
+            console.log("STARTING THROTTLE");
             if(this.throttle > 0) {
                 if(!this._throttleTimeout) {
                     this._throttleTimeout = setTimeout(function() {
                         this._throttleTimeout = null;
                         onChange();
-                        console.log("FIRING CHANGE");
                     }, this.throttle);
                 }
             }
@@ -32,9 +31,12 @@ export class ModelObserver
             { onChange(); }
         }
 
-        console.log("GOT " + subscriptions.length + " SUBS");
+        console.log("LOOPING SUBS");
         for(var i = 0; i < subscriptions.length; i++)
-        { subscriptions[i].subscribe(throttledHandler); }
+        {
+            console.log("Linking Sub to throttle", subscriptions[i]);
+            subscriptions[i].subscribe(throttledHandler);
+        }
     }
 
     _getObjectType(obj) {
@@ -61,11 +63,10 @@ export class ModelObserver
 
                 default:
                 {
-                    let propertyDescriptor = Object.getOwnPropertyDescriptor(model, property)
+                    let propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
                     if(!propertyDescriptor.get)
                     {
                         let subscription = this.observerLocator.getObserver(model, property);
-                        console.log("SUB: ", subscription);
                         subscriptions.push(subscription);
                     }
                 }

@@ -12,12 +12,13 @@ export class ModelObserver
         this.observerLocator = observerLocator;
     }
 
-    observe(model, onChange)
+    observe = (model, onChange) =>
     {
         var subscriptions = [];
         this._getAllSubscriptions(model, subscriptions);
 
-        function throttledHandler() {
+        var throttledHandler = () => {
+            console.log("STARTING THROTTLE");
             if(this.throttle > 0) {
                 if(!this._throttleTimeout) {
                     this._throttleTimeout = setTimeout(function() {
@@ -30,8 +31,12 @@ export class ModelObserver
             { onChange(); }
         }
 
+        console.log("LOOPING SUBS");
         for(var i = 0; i < subscriptions.length; i++)
-        { subscriptions[i].subscribe(throttledHandler); }
+        {
+            console.log("Linking Sub to throttle", subscriptions[i]);
+            subscriptions[i].subscribe(throttledHandler);
+        }
     }
 
     _getObjectType(obj) {

@@ -12,10 +12,37 @@ var _aureliaFramework = require("aurelia-framework");
 
 var ModelObserver = (function () {
     function ModelObserver(observerLocator) {
+        var _this = this;
+
         _classCallCheck(this, _ModelObserver);
 
         this.throttle = 100;
         this._throttleTimeout = 0;
+
+        this.observe = function (model, onChange) {
+            var subscriptions = [];
+            _this._getAllSubscriptions(model, subscriptions);
+
+            var throttledHandler = function throttledHandler() {
+                console.log("STARTING THROTTLE");
+                if (_this.throttle > 0) {
+                    if (!_this._throttleTimeout) {
+                        _this._throttleTimeout = setTimeout(function () {
+                            this._throttleTimeout = null;
+                            onChange();
+                        }, _this.throttle);
+                    }
+                } else {
+                    onChange();
+                }
+            };
+
+            console.log("LOOPING SUBS");
+            for (var i = 0; i < subscriptions.length; i++) {
+                console.log("Linking Sub to throttle", subscriptions[i]);
+                subscriptions[i].subscribe(throttledHandler);
+            }
+        };
 
         this.observerLocator = observerLocator;
     }
@@ -23,32 +50,6 @@ var ModelObserver = (function () {
     var _ModelObserver = ModelObserver;
 
     _createClass(_ModelObserver, [{
-        key: "observe",
-        value: function observe(model, onChange) {
-            var subscriptions = [];
-            this._getAllSubscriptions(model, subscriptions);
-
-            function throttledHandler() {
-                console.log("THROTTLING BEGUN");
-                if (this.throttle > 0) {
-                    if (!this._throttleTimeout) {
-                        this._throttleTimeout = setTimeout(function () {
-                            this._throttleTimeout = null;
-                            onChange();
-                            console.log("FIRING CHANGE");
-                        }, this.throttle);
-                    }
-                } else {
-                    onChange();
-                }
-            }
-
-            console.log("GOT " + subscriptions.length + " SUBS");
-            for (var i = 0; i < subscriptions.length; i++) {
-                subscriptions[i].subscribe(throttledHandler);
-            }
-        }
-    }, {
         key: "_getObjectType",
         value: function _getObjectType(obj) {
             if (obj && typeof obj === "object" && obj.constructor == new Date().constructor) return "date";
@@ -57,7 +58,7 @@ var ModelObserver = (function () {
     }, {
         key: "_getAllSubscriptions",
         value: function _getAllSubscriptions(model, subscriptions) {
-            var _this = this;
+            var _this2 = this;
 
             for (var property in model) {
                 var typeOfData = this._getObjectType(model[property]);
@@ -71,7 +72,7 @@ var ModelObserver = (function () {
                         {
                             var underlyingArray = model[property]();
                             underlyingArray.forEach(function (entry, index) {
-                                _this._getAllSubscriptions(underlyingArray[index], subscriptions);
+                                _this2._getAllSubscriptions(underlyingArray[index], subscriptions);
                             });
                         }
                         break;
@@ -81,7 +82,6 @@ var ModelObserver = (function () {
                             var propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
                             if (!propertyDescriptor.get) {
                                 var subscription = this.observerLocator.getObserver(model, property);
-                                console.log("SUB: ", subscription);
                                 subscriptions.push(subscription);
                             }
                         }

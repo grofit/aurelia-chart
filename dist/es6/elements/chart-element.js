@@ -33,13 +33,13 @@ export class ChartElement {
     { this.subscribeToChanges(); }
   }
 
-  createChart = function() {
+  createChart() {
     var context2d = this.canvasElement.getContext("2d");
     this.convertAllDataToNumeric(this.data); // doesnt like string based numerics
     this._activeChart = new Chart(context2d)[this.type](this.data, this.nativeOptions);
   };
 
-  refreshChart() {
+  refreshChart = () => {
     this._activeChart.destroy();
 
     // This stops the chart shrinking into oblivion
@@ -47,10 +47,10 @@ export class ChartElement {
     this.canvasElement.height = this._canvasHeight;
   };
 
-  subscribeToChanges = function() {
+  subscribeToChanges() {
     this._modelObserver.throttle = this.throttle || 100;
-    this._modelObserver.observe(this.data, this.refreshChart);
-  }
+    this._modelObserver.observe(this.data, () => this.refreshChart);
+  };
 
   convertAllDataToNumeric(model) {
     if(model.datasets) // Array checks
@@ -63,7 +63,7 @@ export class ChartElement {
     }
     else // Segment checks
     {
-      model.forEach(function(datapoint){
+      model.forEach((datapoint) => {
         datapoint.value = parseInt(datapoint.value);
       });
     }

@@ -1,6 +1,6 @@
 {
   "name": "aurelia-chart",
-  "version": "0.0.1",
+  "version": "0.0.1a",
   "registry": "jspm",
   "description": "A simple element to handle showing charts (uses chart js behind the scenes)",
   "keywords": [

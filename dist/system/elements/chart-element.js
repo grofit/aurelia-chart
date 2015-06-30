@@ -25,6 +25,8 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
         var _instanceInitializers = {};
 
         function ChartElement(modelObserver) {
+          var _this = this;
+
           _classCallCheck(this, _ChartElement);
 
           _defineDecoratedPropertyDescriptor(this, "type", _instanceInitializers);
@@ -39,15 +41,11 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
 
           _defineDecoratedPropertyDescriptor(this, "canvasElement", _instanceInitializers);
 
-          this.createChart = function () {
-            var context2d = this.canvasElement.getContext("2d");
-            this.convertAllDataToNumeric(this.data);
-            this._activeChart = new Chart(context2d)[this.type](this.data, this.nativeOptions);
-          };
+          this.refreshChart = function () {
+            _this._activeChart.destroy();
 
-          this.subscribeToChanges = function () {
-            this._modelObserver.throttle = this.throttle || 100;
-            this._modelObserver.observe(this.data, this.refreshChart);
+            _this.canvasElement.width = _this._canvasWidth;
+            _this.canvasElement.height = _this._canvasHeight;
           };
 
           this._modelObserver = modelObserver;
@@ -68,12 +66,21 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
             }
           }
         }, {
-          key: "refreshChart",
-          value: function refreshChart() {
-            this._activeChart.destroy();
+          key: "createChart",
+          value: function createChart() {
+            var context2d = this.canvasElement.getContext("2d");
+            this.convertAllDataToNumeric(this.data);
+            this._activeChart = new Chart(context2d)[this.type](this.data, this.nativeOptions);
+          }
+        }, {
+          key: "subscribeToChanges",
+          value: function subscribeToChanges() {
+            var _this2 = this;
 
-            this.canvasElement.width = this._canvasWidth;
-            this.canvasElement.height = this._canvasHeight;
+            this._modelObserver.throttle = this.throttle || 100;
+            this._modelObserver.observe(this.data, function () {
+              return _this2.refreshChart;
+            });
           }
         }, {
           key: "convertAllDataToNumeric",
