@@ -1,19 +1,14 @@
-System.register(["./generator/gravatar-url-generator"], function (_export) {
+System.register([], function (_export) {
     "use strict";
-
-    var GravatarUrlGenerator;
 
     _export("configure", configure);
 
     function configure(aurelia) {
-        aurelia.container.registerInstance(GravatarUrlGenerator, new GravatarUrlGenerator());
-        aurelia.globalizeResources("./elements/gravatar-element");
+        aurelia.globalizeResources("./elements/chart-element");
     }
 
     return {
-        setters: [function (_generatorGravatarUrlGenerator) {
-            GravatarUrlGenerator = _generatorGravatarUrlGenerator.GravatarUrlGenerator;
-        }],
+        setters: [],
         execute: function () {}
     };
 });

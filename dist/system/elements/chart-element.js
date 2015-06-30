@@ -1,4 +1,4 @@
-System.register(["aurelia-framework", "../observers/group-observer.", "chartjs"], function (_export) {
+System.register(["aurelia-framework", "../observers/model-observer", "chartjs"], function (_export) {
   "use strict";
 
   var inject, customElement, useView, bindable, ModelObserver, Chart, ChartElement;
@@ -15,8 +15,8 @@ System.register(["aurelia-framework", "../observers/group-observer.", "chartjs"]
       customElement = _aureliaFramework.customElement;
       useView = _aureliaFramework.useView;
       bindable = _aureliaFramework.bindable;
-    }, function (_observersGroupObserver) {
-      ModelObserver = _observersGroupObserver.ModelObserver;
+    }, function (_observersModelObserver) {
+      ModelObserver = _observersModelObserver.ModelObserver;
     }, function (_chartjs) {
       Chart = _chartjs["default"];
     }],
@@ -56,19 +56,16 @@ System.register(["aurelia-framework", "../observers/group-observer.", "chartjs"]
         var _ChartElement = ChartElement;
 
         _createDecoratedClass(_ChartElement, [{
-          key: "bind",
-          value: function bind() {
-            createChart();
-
-            if (shouldUpdate) {
-              this.subscribeToChanges();
-            }
-          }
-        }, {
           key: "attached",
           value: function attached() {
             this._canvasWidth = this.canvasElement.width;
             this._canvasHeight = this.canvasElement.height;
+
+            this.createChart();
+
+            if (this.shouldUpdate) {
+              this.subscribeToChanges();
+            }
           }
         }, {
           key: "refreshChart",

@@ -15,14 +15,16 @@ export class ModelObserver
     observe(model, onChange)
     {
         var subscriptions = [];
-        _getAllSubscriptions(model, subscriptions);
+        this._getAllSubscriptions(model, subscriptions);
 
-        function throttledHandler(change) {
+        function throttledHandler() {
+            console.log("THROTTLING BEGUN");
             if(this.throttle > 0) {
                 if(!this._throttleTimeout) {
                     this._throttleTimeout = setTimeout(function() {
                         this._throttleTimeout = null;
                         onChange();
+                        console.log("FIRING CHANGE");
                     }, this.throttle);
                 }
             }
@@ -30,6 +32,7 @@ export class ModelObserver
             { onChange(); }
         }
 
+        console.log("GOT " + subscriptions.length + " SUBS");
         for(var i = 0; i < subscriptions.length; i++)
         { subscriptions[i].subscribe(throttledHandler); }
     }
@@ -62,6 +65,7 @@ export class ModelObserver
                     if(!propertyDescriptor.get)
                     {
                         let subscription = this.observerLocator.getObserver(model, property);
+                        console.log("SUB: ", subscription);
                         subscriptions.push(subscription);
                     }
                 }

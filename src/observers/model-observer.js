@@ -15,9 +15,9 @@ export class ModelObserver
     observe(model, onChange)
     {
         var subscriptions = [];
-        _getAllSubscriptions(model, subscriptions);
+        this._getAllSubscriptions(model, subscriptions);
 
-        function throttledHandler(change) {
+        function throttledHandler() {
             if(this.throttle > 0) {
                 if(!this._throttleTimeout) {
                     this._throttleTimeout = setTimeout(function() {
@@ -58,7 +58,7 @@ export class ModelObserver
 
                 default:
                 {
-                    let propertyDescriptor = Object.getOwnPropertyDescriptor(model, property)
+                    let propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
                     if(!propertyDescriptor.get)
                     {
                         let subscription = this.observerLocator.getObserver(model, property);

@@ -29,14 +29,16 @@ System.register(["aurelia-framework"], function (_export) {
                     key: "observe",
                     value: function observe(model, onChange) {
                         var subscriptions = [];
-                        _getAllSubscriptions(model, subscriptions);
+                        this._getAllSubscriptions(model, subscriptions);
 
-                        function throttledHandler(change) {
+                        function throttledHandler() {
+                            console.log("THROTTLING BEGUN");
                             if (this.throttle > 0) {
                                 if (!this._throttleTimeout) {
                                     this._throttleTimeout = setTimeout(function () {
                                         this._throttleTimeout = null;
                                         onChange();
+                                        console.log("FIRING CHANGE");
                                     }, this.throttle);
                                 }
                             } else {
@@ -44,6 +46,7 @@ System.register(["aurelia-framework"], function (_export) {
                             }
                         }
 
+                        console.log("GOT " + subscriptions.length + " SUBS");
                         for (var i = 0; i < subscriptions.length; i++) {
                             subscriptions[i].subscribe(throttledHandler);
                         }
@@ -81,6 +84,7 @@ System.register(["aurelia-framework"], function (_export) {
                                         var propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
                                         if (!propertyDescriptor.get) {
                                             var subscription = this.observerLocator.getObserver(model, property);
+                                            console.log("SUB: ", subscription);
                                             subscriptions.push(subscription);
                                         }
                                     }

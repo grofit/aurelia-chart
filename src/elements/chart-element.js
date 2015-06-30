@@ -1,5 +1,5 @@
 import {inject, customElement, useView, bindable} from 'aurelia-framework'
-import {ModelObserver} from "../observers/group-observer."
+import {ModelObserver} from "../observers/model-observer"
 import Chart from "chartjs"
 
 @customElement('chart')
@@ -23,16 +23,14 @@ export class ChartElement {
     this._modelObserver = modelObserver;
   }
 
-  bind() {
-    createChart();
-
-    if(shouldUpdate)
-    { this.subscribeToChanges(); }
-  }
-
   attached() {
     this._canvasWidth = this.canvasElement.width;
     this._canvasHeight = this.canvasElement.height;
+
+    this.createChart();
+
+    if(this.shouldUpdate)
+    { this.subscribeToChanges(); }
   }
 
   createChart = function() {

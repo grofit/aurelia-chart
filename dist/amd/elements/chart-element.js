@@ -1,4 +1,4 @@
-define(["exports", "aurelia-framework", "../observers/group-observer.", "chartjs"], function (exports, _aureliaFramework, _observersGroupObserver, _chartjs) {
+define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"], function (exports, _aureliaFramework, _observersModelObserver, _chartjs) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -50,19 +50,16 @@ define(["exports", "aurelia-framework", "../observers/group-observer.", "chartjs
     var _ChartElement = ChartElement;
 
     _createDecoratedClass(_ChartElement, [{
-      key: "bind",
-      value: function bind() {
-        createChart();
-
-        if (shouldUpdate) {
-          this.subscribeToChanges();
-        }
-      }
-    }, {
       key: "attached",
       value: function attached() {
         this._canvasWidth = this.canvasElement.width;
         this._canvasHeight = this.canvasElement.height;
+
+        this.createChart();
+
+        if (this.shouldUpdate) {
+          this.subscribeToChanges();
+        }
       }
     }, {
       key: "refreshChart",
@@ -120,7 +117,7 @@ define(["exports", "aurelia-framework", "../observers/group-observer.", "chartjs
     }], null, _instanceInitializers);
 
     ChartElement = (0, _aureliaFramework.useView)("./chart-element.html")(ChartElement) || ChartElement;
-    ChartElement = (0, _aureliaFramework.inject)(_observersGroupObserver.ModelObserver)(ChartElement) || ChartElement;
+    ChartElement = (0, _aureliaFramework.inject)(_observersModelObserver.ModelObserver)(ChartElement) || ChartElement;
     ChartElement = (0, _aureliaFramework.customElement)("chart")(ChartElement) || ChartElement;
     return ChartElement;
   })();
