@@ -52,6 +52,12 @@ Or you can tell it to listen to observable changes: (Not working due to re-struc
 <chart type="Pie" data.bind="myData" should-update="true" throttle="100" }"></chart>
 ```
 
+Finally there is also support for attributes directly on the canvas:
+```
+<canvas chart="type: Pie; data.bind: myData; should-update: true; throttle: 100;"></canvas>
+```
+
+So you can have finer grained control over the element yourself if needed.
 
 The chartjs specific options can be found here:
 
