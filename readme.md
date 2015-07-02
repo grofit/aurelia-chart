@@ -8,6 +8,16 @@ One major reason why this is a good idea is because this way you do not need you
 knowing about your DOM elements, as the binding takes care of that, so you just expose
 the meaningful stuff.
 
+## Install
+
+use JSPM:
+
+`jspm install github:grofit/aurelia-chart`
+
+then include the plugin in aurelia
+
+`aurelia.use.plugin("grofit/aurelia-chart");`
+
 ## Quirks
 
 So there is a lot of magic behind the scenes to allow for observable hookins, there are a few issues
