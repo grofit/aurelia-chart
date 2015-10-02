@@ -30,8 +30,8 @@ into oblivion, we manually cache the desired width and height to stop this happe
 
 * Do not use textual data for values
 
-ChartJS can only handle numeric data, and we try to account for this when you receive input via knockout bindings
-as by default ko treats all input values as a string, ChartJS dislikes this, so we have to go through the generated
+ChartJS can only handle numeric data, and we try to account for this when you receive input via bindings
+as by default input values are a string, ChartJS dislikes this, so we have to go through the generated
 data and manually replace textual instances of numbers to actual numbers.
 
 * It is advised you set a throttle when you use `should-update`, and a graph will only update if `should-update` is true
@@ -49,7 +49,7 @@ will fall over. There was an initial fix to allow you to put in whatever case yo
 ## Usage
 The element expects a type element describing what type of chart you want and the data you wish to expose:
 ```
-<chart type="Bar" Data.bind="myData" }"></chart>
+<chart type="Bar" data.bind="myData" }"></chart>
 ```
 
 Or it can be called with a options if you require more control over the chart:
