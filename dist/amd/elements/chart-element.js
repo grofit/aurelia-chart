@@ -11,12 +11,45 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer.call(target); Object.defineProperty(target, key, descriptor); }
+  function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
   var _Chart = _interopRequireDefault(_chartjs);
 
   var ChartElement = (function () {
     var _instanceInitializers = {};
+    var _instanceInitializers = {};
+
+    _createDecoratedClass(ChartElement, [{
+      key: "type",
+      decorators: [_aureliaFramework.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
+      key: "data",
+      decorators: [_aureliaFramework.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
+      key: "shouldUpdate",
+      decorators: [_aureliaFramework.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
+      key: "throttle",
+      decorators: [_aureliaFramework.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
+      key: "nativeOptions",
+      decorators: [_aureliaFramework.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
+      key: "canvasElement",
+      decorators: [_aureliaFramework.bindable],
+      initializer: null,
+      enumerable: true
+    }], null, _instanceInitializers);
 
     function ChartElement(modelObserver) {
       var _this = this;
@@ -45,9 +78,7 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
       this._modelObserver = modelObserver;
     }
 
-    var _ChartElement = ChartElement;
-
-    _createDecoratedClass(_ChartElement, [{
+    _createDecoratedClass(ChartElement, [{
       key: "attached",
       value: function attached() {
         this._canvasWidth = this.canvasElement.width;
@@ -91,41 +122,12 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
             });
           }
       }
-    }, {
-      key: "type",
-      decorators: [_aureliaFramework.bindable],
-      initializer: null,
-      enumerable: true
-    }, {
-      key: "data",
-      decorators: [_aureliaFramework.bindable],
-      initializer: null,
-      enumerable: true
-    }, {
-      key: "shouldUpdate",
-      decorators: [_aureliaFramework.bindable],
-      initializer: null,
-      enumerable: true
-    }, {
-      key: "throttle",
-      decorators: [_aureliaFramework.bindable],
-      initializer: null,
-      enumerable: true
-    }, {
-      key: "nativeOptions",
-      decorators: [_aureliaFramework.bindable],
-      initializer: null,
-      enumerable: true
-    }, {
-      key: "canvasElement",
-      decorators: [_aureliaFramework.bindable],
-      initializer: null,
-      enumerable: true
     }], null, _instanceInitializers);
 
+    var _ChartElement = ChartElement;
     ChartElement = (0, _aureliaFramework.useView)("./chart-element.html")(ChartElement) || ChartElement;
     ChartElement = (0, _aureliaFramework.inject)(_observersModelObserver.ModelObserver)(ChartElement) || ChartElement;
-    ChartElement = (0, _aureliaFramework.customElement)("chart")(ChartElement) || ChartElement;
+    ChartElement = (0, _aureliaFramework.customElement)('chart')(ChartElement) || ChartElement;
     return ChartElement;
   })();
 

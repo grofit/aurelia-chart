@@ -1,7 +1,7 @@
 System.register(["aurelia-framework"], function (_export) {
     "use strict";
 
-    var ObserverLocator, inject, ModelObserver;
+    var BindingEngine, inject, ModelObserver;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -9,12 +9,12 @@ System.register(["aurelia-framework"], function (_export) {
 
     return {
         setters: [function (_aureliaFramework) {
-            ObserverLocator = _aureliaFramework.ObserverLocator;
+            BindingEngine = _aureliaFramework.BindingEngine;
             inject = _aureliaFramework.inject;
         }],
         execute: function () {
             ModelObserver = (function () {
-                function ModelObserver(observerLocator) {
+                function ModelObserver(bindingEngine) {
                     var _this = this;
 
                     _classCallCheck(this, _ModelObserver);
@@ -47,12 +47,10 @@ System.register(["aurelia-framework"], function (_export) {
                         }
                     };
 
-                    this.observerLocator = observerLocator;
+                    this.bindingEngine = bindingEngine;
                 }
 
-                var _ModelObserver = ModelObserver;
-
-                _createClass(_ModelObserver, [{
+                _createClass(ModelObserver, [{
                     key: "_getObjectType",
                     value: function _getObjectType(obj) {
                         if (obj && typeof obj === "object" && obj.constructor == new Date().constructor) return "date";
@@ -82,9 +80,8 @@ System.register(["aurelia-framework"], function (_export) {
 
                                 default:
                                     {
-                                        var propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
-                                        if (propertyDescriptor.get && !propertyDescriptor.set) {
-                                            var subscription = this.observerLocator.getObserver(model, property);
+                                        var subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
+                                        if (subscription) {
                                             subscriptions.push(subscription);
                                         }
                                     }
@@ -94,7 +91,8 @@ System.register(["aurelia-framework"], function (_export) {
                     }
                 }]);
 
-                ModelObserver = inject(ObserverLocator)(ModelObserver) || ModelObserver;
+                var _ModelObserver = ModelObserver;
+                ModelObserver = inject(BindingEngine)(ModelObserver) || ModelObserver;
                 return ModelObserver;
             })();
 

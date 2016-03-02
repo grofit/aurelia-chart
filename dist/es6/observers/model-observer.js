@@ -1,15 +1,15 @@
-import {ObserverLocator, inject} from 'aurelia-framework';
+import {BindingEngine, inject} from 'aurelia-framework';
 
-@inject(ObserverLocator)
+@inject(BindingEngine)
 export class ModelObserver
 {
     throttle = 100;
 
     _throttleTimeout = 0;
 
-    constructor(observerLocator)
+    constructor(bindingEngine)
     {
-        this.observerLocator = observerLocator;
+        this.bindingEngine = bindingEngine;
     }
 
     observe = (model, onChange) =>
@@ -63,10 +63,9 @@ export class ModelObserver
 
                 default:
                 {
-                    let propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
-                    if(propertyDescriptor.get && !propertyDescriptor.set)
+                    let subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
+                    if(subscription)
                     {
-                        let subscription = this.observerLocator.getObserver(model, property);
                         subscriptions.push(subscription);
                     }
                 }

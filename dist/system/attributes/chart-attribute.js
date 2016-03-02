@@ -7,7 +7,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer.call(target); Object.defineProperty(target, key, descriptor); }
+  function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
   return {
     setters: [function (_aureliaFramework) {
@@ -23,6 +23,34 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
     execute: function () {
       ChartAttribute = (function () {
         var _instanceInitializers = {};
+        var _instanceInitializers = {};
+
+        _createDecoratedClass(ChartAttribute, [{
+          key: "type",
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
+          key: "data",
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
+          key: "shouldUpdate",
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
+          key: "throttle",
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
+          key: "nativeOptions",
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }], null, _instanceInitializers);
 
         function ChartAttribute(element, modelObserver) {
           var _this = this;
@@ -50,9 +78,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
           this._modelObserver = modelObserver;
         }
 
-        var _ChartAttribute = ChartAttribute;
-
-        _createDecoratedClass(_ChartAttribute, [{
+        _createDecoratedClass(ChartAttribute, [{
           key: "attached",
           value: function attached() {
             this._canvasWidth = this.element.width;
@@ -96,35 +122,11 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
                 });
               }
           }
-        }, {
-          key: "type",
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
-        }, {
-          key: "data",
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
-        }, {
-          key: "shouldUpdate",
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
-        }, {
-          key: "throttle",
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
-        }, {
-          key: "nativeOptions",
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
         }], null, _instanceInitializers);
 
+        var _ChartAttribute = ChartAttribute;
         ChartAttribute = inject(Element, ModelObserver)(ChartAttribute) || ChartAttribute;
-        ChartAttribute = customAttribute("chart")(ChartAttribute) || ChartAttribute;
+        ChartAttribute = customAttribute('chart')(ChartAttribute) || ChartAttribute;
         return ChartAttribute;
       })();
 

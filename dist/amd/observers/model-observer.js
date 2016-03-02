@@ -10,7 +10,7 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
     var ModelObserver = (function () {
-        function ModelObserver(observerLocator) {
+        function ModelObserver(bindingEngine) {
             var _this = this;
 
             _classCallCheck(this, _ModelObserver);
@@ -43,12 +43,10 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
                 }
             };
 
-            this.observerLocator = observerLocator;
+            this.bindingEngine = bindingEngine;
         }
 
-        var _ModelObserver = ModelObserver;
-
-        _createClass(_ModelObserver, [{
+        _createClass(ModelObserver, [{
             key: "_getObjectType",
             value: function _getObjectType(obj) {
                 if (obj && typeof obj === "object" && obj.constructor == new Date().constructor) return "date";
@@ -78,9 +76,8 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
 
                         default:
                             {
-                                var propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
-                                if (propertyDescriptor.get && !propertyDescriptor.set) {
-                                    var subscription = this.observerLocator.getObserver(model, property);
+                                var subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
+                                if (subscription) {
                                     subscriptions.push(subscription);
                                 }
                             }
@@ -90,7 +87,8 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
             }
         }]);
 
-        ModelObserver = (0, _aureliaFramework.inject)(_aureliaFramework.ObserverLocator)(ModelObserver) || ModelObserver;
+        var _ModelObserver = ModelObserver;
+        ModelObserver = (0, _aureliaFramework.inject)(_aureliaFramework.BindingEngine)(ModelObserver) || ModelObserver;
         return ModelObserver;
     })();
 

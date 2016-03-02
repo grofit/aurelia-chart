@@ -8,10 +8,10 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _aureliaFramework = require("aurelia-framework");
+var _aureliaFramework = require('aurelia-framework');
 
 var ModelObserver = (function () {
-    function ModelObserver(observerLocator) {
+    function ModelObserver(bindingEngine) {
         var _this = this;
 
         _classCallCheck(this, _ModelObserver);
@@ -44,12 +44,10 @@ var ModelObserver = (function () {
             }
         };
 
-        this.observerLocator = observerLocator;
+        this.bindingEngine = bindingEngine;
     }
 
-    var _ModelObserver = ModelObserver;
-
-    _createClass(_ModelObserver, [{
+    _createClass(ModelObserver, [{
         key: "_getObjectType",
         value: function _getObjectType(obj) {
             if (obj && typeof obj === "object" && obj.constructor == new Date().constructor) return "date";
@@ -79,9 +77,8 @@ var ModelObserver = (function () {
 
                     default:
                         {
-                            var propertyDescriptor = Object.getOwnPropertyDescriptor(model, property);
-                            if (propertyDescriptor.get && !propertyDescriptor.set) {
-                                var subscription = this.observerLocator.getObserver(model, property);
+                            var subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
+                            if (subscription) {
                                 subscriptions.push(subscription);
                             }
                         }
@@ -91,7 +88,8 @@ var ModelObserver = (function () {
         }
     }]);
 
-    ModelObserver = (0, _aureliaFramework.inject)(_aureliaFramework.ObserverLocator)(ModelObserver) || ModelObserver;
+    var _ModelObserver = ModelObserver;
+    ModelObserver = (0, _aureliaFramework.inject)(_aureliaFramework.BindingEngine)(ModelObserver) || ModelObserver;
     return ModelObserver;
 })();
 

@@ -4,8 +4,8 @@ System.register([], function (_export) {
     _export("configure", configure);
 
     function configure(aurelia) {
-        aurelia.globalizeResources("./elements/chart-element");
-        aurelia.globalizeResources("./attributes/chart-attribute");
+        aurelia.globalResources("./elements/chart-element");
+        aurelia.globalResources("./attributes/chart-attribute");
     }
 
     return {
