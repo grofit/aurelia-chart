@@ -1,4 +1,4 @@
-define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"], function (exports, _aureliaFramework, _observersModelObserver, _chartjs) {
+define(["exports", "aurelia-framework", "../observers/model-observer", "../shared/numeric-converter", "chartjs"], function (exports, _aureliaFramework, _observersModelObserver, _sharedNumericConverter, _chartjs) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -69,7 +69,6 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
       _defineDecoratedPropertyDescriptor(this, "canvasElement", _instanceInitializers);
 
       this.refreshChart = function () {
-        console.log("RE-CREATING CHART");
         _this._activeChart.destroy();
         _this.createChart();
 
@@ -77,8 +76,8 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
         _this.canvasElement.height = _this._canvasHeight;
       };
 
-      console.log("CREATED");
       this._modelObserver = modelObserver;
+      this._numericConverter = new _sharedNumericConverter.NumericConverter();
     }
 
     _createDecoratedClass(ChartElement, [{
@@ -96,38 +95,15 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
     }, {
       key: "createChart",
       value: function createChart() {
-        console.log("CREATING CHART");
         var context2d = this.canvasElement.getContext("2d");
-        var sanitisedData = this.convertAllDataToNumeric(this.data);
+        var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data);
         this._activeChart = new _Chart["default"](context2d)[this.type](sanitisedData, this.nativeOptions);
       }
     }, {
       key: "subscribeToChanges",
       value: function subscribeToChanges() {
-        console.log("LISTENING FOR UPDATES");
         this._modelObserver.throttle = this.throttle || 100;
         this._modelObserver.observe(this.data, this.refreshChart);
-      }
-    }, {
-      key: "convertAllDataToNumeric",
-      value: function convertAllDataToNumeric(model) {
-        var sanitisedData = null;
-        if (model.datasets) {
-            sanitisedData = {};
-            sanitisedData.datasets = [];
-            model.datasets.forEach(function (dataset, datasetIndex) {
-              sanitisedData[datasetIndex] = { data: [] };
-              for (var i = 0; i < dataset.data.length; i++) {
-                sanitisedData.data[i] = parseFloat(dataset.data[i]);
-              }
-            });
-          } else {
-            sanitisedData = [];
-            model.forEach(function (datapoint, datapointIndex) {
-              sanitisedData[datapointIndex] = { value: parseInt(datapoint.value) };
-            });
-          }
-        return model;
       }
     }], null, _instanceInitializers);
 

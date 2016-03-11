@@ -1,11 +1,19 @@
 <template>
-    <h2>Doughnut Chart</h2>
-    <chart id="some-dynamic-doughnut-chart" width="500" height="187" type="Doughnut" should-update="true" data.bind="DynamicDoughnutData" throttle="2000"></chart>
-    <div>
-        <label>Red Value</label>
-        <input value.bind="DynamicDoughnutData[0].value" placeholder="Red Value"/>
-        <input value.bind="DynamicDoughnutData[1].value" placeholder="Green Value"/>
-        <input value.bind="DynamicDoughnutData[2].value" placeholder="Yellow Value"/>
-    </div>
-    <p>Changing the above value should trigger a chart refresh after 2 seconds</p>
+    <fieldset>
+        <legend>Line Graph via Attribute</legend>
+        <canvas id="some-dynamic-doughnut-chart" width="500" height="187" chart="type: Line; 'should-update': false; data.bind: SimpleLineData"></canvas>
+        <p>Changing the data wont change this graph as it is not update-able</p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Doughnut Chart via Element</legend>
+        <chart id="some-dynamic-doughnut-chart" width="500" height="187" type="Doughnut" should-update="true" data.bind="DynamicDoughnutData" throttle="2000"></chart>
+        <div>
+            <label>Red Value</label>
+            <input value.bind="DynamicDoughnutData[0].value" placeholder="Red Value"/>
+            <input value.bind="DynamicDoughnutData[1].value" placeholder="Green Value"/>
+            <input value.bind="DynamicDoughnutData[2].value" placeholder="Yellow Value"/>
+        </div>
+        <p>Changing the above value should trigger a chart refresh after 2 seconds</p>
+    </fieldset>
 </template>

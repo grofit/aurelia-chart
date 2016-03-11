@@ -16,6 +16,8 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _observersModelObserver = require("../observers/model-observer");
 
+var _sharedNumericConverter = require("../shared/numeric-converter");
+
 var _chartjs = require("chartjs");
 
 var _chartjs2 = _interopRequireDefault(_chartjs);
@@ -75,6 +77,7 @@ var ChartAttribute = (function () {
 
     this.element = element;
     this._modelObserver = modelObserver;
+    this._numericConverter = new _sharedNumericConverter.NumericConverter();
   }
 
   _createDecoratedClass(ChartAttribute, [{
@@ -93,33 +96,14 @@ var ChartAttribute = (function () {
     key: "createChart",
     value: function createChart() {
       var context2d = this.element.getContext("2d");
-      this.convertAllDataToNumeric(this.data);
-      this._activeChart = new _chartjs2["default"](context2d)[this.type](this.data, this.nativeOptions);
+      var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data);
+      this._activeChart = new _chartjs2["default"](context2d)[this.type](sanitisedData, this.nativeOptions);
     }
   }, {
     key: "subscribeToChanges",
     value: function subscribeToChanges() {
-      var _this2 = this;
-
       this._modelObserver.throttle = this.throttle || 100;
-      this._modelObserver.observe(this.data, function () {
-        return _this2.refreshChart;
-      });
-    }
-  }, {
-    key: "convertAllDataToNumeric",
-    value: function convertAllDataToNumeric(model) {
-      if (model.datasets) {
-          model.datasets.forEach(function (dataset) {
-            for (var i = 0; i < dataset.data.length; i++) {
-              dataset.data[i] = parseFloat(dataset.data[i]);
-            }
-          });
-        } else {
-          model.forEach(function (datapoint) {
-            datapoint.value = parseInt(datapoint.value);
-          });
-        }
+      this._modelObserver.observe(this.data, this.refreshChart);
     }
   }], null, _instanceInitializers);
 

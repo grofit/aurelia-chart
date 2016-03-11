@@ -1,4 +1,4 @@
-define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"], function (exports, _aureliaFramework, _observersModelObserver, _chartjs) {
+define(["exports", "aurelia-framework", "../observers/model-observer", "../shared/numeric-converter", "chartjs"], function (exports, _aureliaFramework, _observersModelObserver, _sharedNumericConverter, _chartjs) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -70,6 +70,7 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
 
       this.element = element;
       this._modelObserver = modelObserver;
+      this._numericConverter = new _sharedNumericConverter.NumericConverter();
     }
 
     _createDecoratedClass(ChartAttribute, [{
@@ -88,33 +89,14 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
       key: "createChart",
       value: function createChart() {
         var context2d = this.element.getContext("2d");
-        this.convertAllDataToNumeric(this.data);
-        this._activeChart = new _Chart["default"](context2d)[this.type](this.data, this.nativeOptions);
+        var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data);
+        this._activeChart = new _Chart["default"](context2d)[this.type](sanitisedData, this.nativeOptions);
       }
     }, {
       key: "subscribeToChanges",
       value: function subscribeToChanges() {
-        var _this2 = this;
-
         this._modelObserver.throttle = this.throttle || 100;
-        this._modelObserver.observe(this.data, function () {
-          return _this2.refreshChart;
-        });
-      }
-    }, {
-      key: "convertAllDataToNumeric",
-      value: function convertAllDataToNumeric(model) {
-        if (model.datasets) {
-            model.datasets.forEach(function (dataset) {
-              for (var i = 0; i < dataset.data.length; i++) {
-                dataset.data[i] = parseFloat(dataset.data[i]);
-              }
-            });
-          } else {
-            model.forEach(function (datapoint) {
-              datapoint.value = parseInt(datapoint.value);
-            });
-          }
+        this._modelObserver.observe(this.data, this.refreshChart);
       }
     }], null, _instanceInitializers);
 

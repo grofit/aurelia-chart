@@ -24,7 +24,6 @@ var ModelObserver = (function () {
             _this._getAllSubscriptions(model, subscriptions);
 
             var throttledHandler = function throttledHandler(args) {
-                console.log("STARTING THROTTLE", args);
                 if (_this.throttle <= 0) {
                     return onChange();
                 }
@@ -32,15 +31,12 @@ var ModelObserver = (function () {
                 if (!_this._throttleTimeout) {
                     _this._throttleTimeout = setTimeout(function () {
                         _this._throttleTimeout = null;
-                        console.log("Throttle Ended");
                         onChange();
                     }, _this.throttle);
                 }
             };
 
-            console.log("LOOPING SUBS");
             for (var i = 0; i < subscriptions.length; i++) {
-                console.log("Linking Sub to throttle", subscriptions[i]);
                 subscriptions[i](throttledHandler);
             }
         };

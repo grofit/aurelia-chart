@@ -1,7 +1,7 @@
-System.register(["aurelia-framework", "../observers/model-observer", "chartjs"], function (_export) {
+System.register(["aurelia-framework", "../observers/model-observer", "../shared/numeric-converter", "chartjs"], function (_export) {
   "use strict";
 
-  var inject, customAttribute, useView, bindable, ModelObserver, Chart, ChartAttribute;
+  var inject, customAttribute, useView, bindable, ModelObserver, NumericConverter, Chart, ChartAttribute;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -17,6 +17,8 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
       bindable = _aureliaFramework.bindable;
     }, function (_observersModelObserver) {
       ModelObserver = _observersModelObserver.ModelObserver;
+    }, function (_sharedNumericConverter) {
+      NumericConverter = _sharedNumericConverter.NumericConverter;
     }, function (_chartjs) {
       Chart = _chartjs["default"];
     }],
@@ -76,6 +78,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
 
           this.element = element;
           this._modelObserver = modelObserver;
+          this._numericConverter = new NumericConverter();
         }
 
         _createDecoratedClass(ChartAttribute, [{
@@ -94,33 +97,14 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
           key: "createChart",
           value: function createChart() {
             var context2d = this.element.getContext("2d");
-            this.convertAllDataToNumeric(this.data);
-            this._activeChart = new Chart(context2d)[this.type](this.data, this.nativeOptions);
+            var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data);
+            this._activeChart = new Chart(context2d)[this.type](sanitisedData, this.nativeOptions);
           }
         }, {
           key: "subscribeToChanges",
           value: function subscribeToChanges() {
-            var _this2 = this;
-
             this._modelObserver.throttle = this.throttle || 100;
-            this._modelObserver.observe(this.data, function () {
-              return _this2.refreshChart;
-            });
-          }
-        }, {
-          key: "convertAllDataToNumeric",
-          value: function convertAllDataToNumeric(model) {
-            if (model.datasets) {
-                model.datasets.forEach(function (dataset) {
-                  for (var i = 0; i < dataset.data.length; i++) {
-                    dataset.data[i] = parseFloat(dataset.data[i]);
-                  }
-                });
-              } else {
-                model.forEach(function (datapoint) {
-                  datapoint.value = parseInt(datapoint.value);
-                });
-              }
+            this._modelObserver.observe(this.data, this.refreshChart);
           }
         }], null, _instanceInitializers);
 
