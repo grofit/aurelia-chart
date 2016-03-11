@@ -20,6 +20,7 @@ export class ChartElement {
   _modelObserver;
 
   constructor(modelObserver) {
+    console.log("CREATED");
     this._modelObserver = modelObserver;
   }
 

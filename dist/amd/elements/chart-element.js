@@ -75,6 +75,7 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
         _this.canvasElement.height = _this._canvasHeight;
       };
 
+      console.log("CREATED");
       this._modelObserver = modelObserver;
     }
 

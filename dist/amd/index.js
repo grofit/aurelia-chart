@@ -7,7 +7,6 @@ define(["exports"], function (exports) {
     exports.configure = configure;
 
     function configure(aurelia) {
-        aurelia.globalResources("./elements/chart-element");
-        aurelia.globalResources("./attributes/chart-attribute");
+        aurelia.globalResources("./elements/chart-element", "./attributes/chart-attribute");
     }
 });

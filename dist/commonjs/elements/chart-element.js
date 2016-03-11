@@ -80,6 +80,7 @@ var ChartElement = (function () {
       _this.canvasElement.height = _this._canvasHeight;
     };
 
+    console.log("CREATED");
     this._modelObserver = modelObserver;
   }
 
