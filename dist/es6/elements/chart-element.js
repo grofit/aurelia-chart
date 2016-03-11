@@ -35,13 +35,16 @@ export class ChartElement {
   }
 
   createChart() {
+    console.log("CREATING CHART");
     var context2d = this.canvasElement.getContext("2d");
-    this.convertAllDataToNumeric(this.data); // doesnt like string based numerics
-    this._activeChart = new Chart(context2d)[this.type](this.data, this.nativeOptions);
+    var sanitisedData = this.convertAllDataToNumeric(this.data); // doesnt like string based numerics
+    this._activeChart = new Chart(context2d)[this.type](sanitisedData, this.nativeOptions);
   };
 
   refreshChart = () => {
+    console.log("RE-CREATING CHART");
     this._activeChart.destroy();
+    this.createChart();
 
     // This stops the chart shrinking into oblivion
     this.canvasElement.width = this._canvasWidth;
@@ -49,25 +52,32 @@ export class ChartElement {
   };
 
   subscribeToChanges() {
+    console.log("LISTENING FOR UPDATES");
     this._modelObserver.throttle = this.throttle || 100;
-    this._modelObserver.observe(this.data, () => this.refreshChart);
+    this._modelObserver.observe(this.data, this.refreshChart);
   };
 
   convertAllDataToNumeric(model) {
+    var sanitisedData = null;
     if(model.datasets) // Array checks
     {
-      model.datasets.forEach(function(dataset){
+      sanitisedData = {};
+      sanitisedData.datasets = [];
+      model.datasets.forEach(function(dataset, datasetIndex){
+        sanitisedData[datasetIndex] = { data: [] };
         for(var i=0;i<dataset.data.length;i++){
-          dataset.data[i] = parseFloat(dataset.data[i]);
+          sanitisedData.data[i] = parseFloat(dataset.data[i])
         }
       });
     }
     else // Segment checks
     {
-      model.forEach((datapoint) => {
-        datapoint.value = parseInt(datapoint.value);
+      sanitisedData = [];
+      model.forEach((datapoint, datapointIndex) => {
+        sanitisedData[datapointIndex] = { value: parseInt(datapoint.value) };
       });
     }
+    return model;
   };
 
 }

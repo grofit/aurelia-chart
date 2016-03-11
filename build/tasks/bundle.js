@@ -3,29 +3,24 @@ var bundler = require('aurelia-bundler');
 var paths = require("../paths");
 
 var bundles = {
-    "plugin-bundle": {
-        "includes": [
-            "./dist/commonjs/**/*.js",
-            "./dist/commonjs/**/*.html!text"
-        ],
-        "options": {
-            "inject": false,
-            "minify": false,
-            "rev": false
-        },
-        excludes: ["aurelia-framework"]
-    },
     "aurelia-bundle.min": {
         "includes": [
-            'aurelia-bootstrapper',
-            'aurelia-dependency-injection',
-            'aurelia-framework',
-            'aurelia-templating-binding',
-            'aurelia-templating-resources',
-            'aurelia-loader-default'
+            "aurelia-bootstrapper",
+            "aurelia-dependency-injection",
+            "aurelia-loader",
+            "aurelia-framework",
+            "aurelia-metadata",
+            "aurelia-templating",
+            "aurelia-logging-console",
+            "aurelia-loader-default",
+            "aurelia-templating-binding",
+            "aurelia-templating-router",
+            "aurelia-templating-resources",
+            "aurelia-history-browser",
+            "chartjs"
         ],
         "options": {
-            "inject": false,
+            "inject": true,
             "minify": true,
             "rev": false
         }

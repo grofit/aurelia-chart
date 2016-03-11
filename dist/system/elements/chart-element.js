@@ -75,7 +75,9 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
           _defineDecoratedPropertyDescriptor(this, "canvasElement", _instanceInitializers);
 
           this.refreshChart = function () {
+            console.log("RE-CREATING CHART");
             _this._activeChart.destroy();
+            _this.createChart();
 
             _this.canvasElement.width = _this._canvasWidth;
             _this.canvasElement.height = _this._canvasHeight;
@@ -100,34 +102,38 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
         }, {
           key: "createChart",
           value: function createChart() {
+            console.log("CREATING CHART");
             var context2d = this.canvasElement.getContext("2d");
-            this.convertAllDataToNumeric(this.data);
-            this._activeChart = new Chart(context2d)[this.type](this.data, this.nativeOptions);
+            var sanitisedData = this.convertAllDataToNumeric(this.data);
+            this._activeChart = new Chart(context2d)[this.type](sanitisedData, this.nativeOptions);
           }
         }, {
           key: "subscribeToChanges",
           value: function subscribeToChanges() {
-            var _this2 = this;
-
+            console.log("LISTENING FOR UPDATES");
             this._modelObserver.throttle = this.throttle || 100;
-            this._modelObserver.observe(this.data, function () {
-              return _this2.refreshChart;
-            });
+            this._modelObserver.observe(this.data, this.refreshChart);
           }
         }, {
           key: "convertAllDataToNumeric",
           value: function convertAllDataToNumeric(model) {
+            var sanitisedData = null;
             if (model.datasets) {
-                model.datasets.forEach(function (dataset) {
+                sanitisedData = {};
+                sanitisedData.datasets = [];
+                model.datasets.forEach(function (dataset, datasetIndex) {
+                  sanitisedData[datasetIndex] = { data: [] };
                   for (var i = 0; i < dataset.data.length; i++) {
-                    dataset.data[i] = parseFloat(dataset.data[i]);
+                    sanitisedData.data[i] = parseFloat(dataset.data[i]);
                   }
                 });
               } else {
-                model.forEach(function (datapoint) {
-                  datapoint.value = parseInt(datapoint.value);
+                sanitisedData = [];
+                model.forEach(function (datapoint, datapointIndex) {
+                  sanitisedData[datapointIndex] = { value: parseInt(datapoint.value) };
                 });
               }
+            return model;
           }
         }], null, _instanceInitializers);
 

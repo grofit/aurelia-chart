@@ -26,24 +26,25 @@ System.register(["aurelia-framework"], function (_export) {
                         var subscriptions = [];
                         _this._getAllSubscriptions(model, subscriptions);
 
-                        var throttledHandler = function throttledHandler() {
-                            console.log("STARTING THROTTLE");
-                            if (_this.throttle > 0) {
-                                if (!_this._throttleTimeout) {
-                                    _this._throttleTimeout = setTimeout(function () {
-                                        this._throttleTimeout = null;
-                                        onChange();
-                                    }, _this.throttle);
-                                }
-                            } else {
-                                onChange();
+                        var throttledHandler = function throttledHandler(args) {
+                            console.log("STARTING THROTTLE", args);
+                            if (_this.throttle <= 0) {
+                                return onChange();
+                            }
+
+                            if (!_this._throttleTimeout) {
+                                _this._throttleTimeout = setTimeout(function () {
+                                    _this._throttleTimeout = null;
+                                    console.log("Throttle Ended");
+                                    onChange();
+                                }, _this.throttle);
                             }
                         };
 
                         console.log("LOOPING SUBS");
                         for (var i = 0; i < subscriptions.length; i++) {
                             console.log("Linking Sub to throttle", subscriptions[i]);
-                            subscriptions[i].subscribe(throttledHandler);
+                            subscriptions[i](throttledHandler);
                         }
                     };
 

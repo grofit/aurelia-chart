@@ -17,25 +17,24 @@ export class ModelObserver
         var subscriptions = [];
         this._getAllSubscriptions(model, subscriptions);
 
-        var throttledHandler = () => {
-            console.log("STARTING THROTTLE");
-            if(this.throttle > 0) {
-                if(!this._throttleTimeout) {
-                    this._throttleTimeout = setTimeout(function() {
-                        this._throttleTimeout = null;
-                        onChange();
-                    }, this.throttle);
-                }
+        var throttledHandler = (args) => {
+            console.log("STARTING THROTTLE", args);
+            if(this.throttle <= 0) { return onChange(); }
+
+            if(!this._throttleTimeout) {
+                this._throttleTimeout = setTimeout(() => {
+                    this._throttleTimeout = null;
+                    console.log("Throttle Ended");
+                    onChange();
+                }, this.throttle);
             }
-            else
-            { onChange(); }
-        }
+        };
 
         console.log("LOOPING SUBS");
         for(var i = 0; i < subscriptions.length; i++)
         {
             console.log("Linking Sub to throttle", subscriptions[i]);
-            subscriptions[i].subscribe(throttledHandler);
+            subscriptions[i](throttledHandler);
         }
     }
 
