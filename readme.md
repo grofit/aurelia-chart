@@ -18,12 +18,21 @@ then include the plugin in aurelia
 
 `aurelia.use.plugin("grofit/aurelia-chart");`
 
+## Example
+
+After MANY hours of soul destroying asking of questions and finding out system.js seems to have a weird bug,
+there is now a space age example available for you to see:
+
+[View Example](https://rawgit.com/grofit/aurelia-chart/master/examples/index.html)
+
+You can see the code and everything in the examples folder!
+
 ## Quirks
 
-So there is a lot of magic behind the scenes to allow for observable hookins, there are a few issues
+So there is a lot of magic behind the scenes to allow for observable hook-ins, there are a few issues
 which require a bit of advance warning.
 
-* If you are going to dynamically upate your data set a width/height on your canvas
+* If you are going to dynamically update your data, set a width/height on your canvas
 
 This is because ChartJS seems to freak out when its destroyed and recreated and will otherwise shrink
 into oblivion, we manually cache the desired width and height to stop this happening
