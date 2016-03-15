@@ -6,7 +6,6 @@ System.config({
     "npm:*": "jspm_packages/npm/*",
     "chart/*": "dist/commonjs/*"
   },
-
   map: {
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.0-beta.1.1.4",
     "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1.1.5",

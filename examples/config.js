@@ -1,6 +1,7 @@
 System.config({
+  baseURL: ".",
   defaultJSExtensions: true,
-  transpiler: "traceur",
+  transpiler: "babel",
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*",
@@ -25,8 +26,6 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.35",
     "chartjs": "github:nnnick/Chart.js@1.0.2",
     "core-js": "npm:core-js@1.2.6",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.93",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -39,7 +38,6 @@ System.config({
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
     },
-    "text": "github:systemjs/plugin-text@0.0.7",
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
     },
@@ -260,7 +258,9 @@ System.config({
       "npm:aurelia-templating-router@1.0.0-beta.1.1.2/route-loader.js",
       "npm:aurelia-templating-router@1.0.0-beta.1.1.2/router-view.js",
       "npm:aurelia-templating@1.0.0-beta.1.1.4.js",
-      "npm:aurelia-templating@1.0.0-beta.1.1.4/aurelia-templating.js"
+      "npm:aurelia-templating@1.0.0-beta.1.1.4/aurelia-templating.js",
+      "npm:babel-core@5.8.35.js",
+      "npm:babel-core@5.8.35/browser.js"
     ]
   }
 });

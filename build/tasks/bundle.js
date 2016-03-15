@@ -17,7 +17,8 @@ var bundles = {
             "aurelia-templating-router",
             "aurelia-templating-resources",
             "aurelia-history-browser",
-            "chartjs"
+            "chartjs",
+            "babel"
         ],
         "options": {
             "inject": true,
