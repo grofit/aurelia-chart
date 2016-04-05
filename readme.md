@@ -94,6 +94,6 @@ The available attributes are:
 
 * **type** - The type of chart you want, i.e. Pie, Bar, Doughnut etc, make sure the caps matches or it will blow up
 * **data** - The data you want to put in, should match the desired format of data in the ChartJS documentation, observables will be translated for you
-* **should-update** - This option tells the binding to scan for observables in the data and refresh the chart when they change (NOT WORKING CURRENTLY)
+* **should-update** - This option tells the binding to scan for observables in the data and refresh the chart when they change
 * **throttle** - This option tells the binding to throttle updates by the desired amount, defaults to 100
 * **native-options** - The options based upon the ChartJS options documented above, there are a couple of unique ones which we use
