@@ -40,13 +40,6 @@
   "directories": {
     "lib": "dist/system"
   },
-  "dependencies": {
-    "aurelia-dependency-injection": "^1.0.0-beta.1",
-    "aurelia-framework": "^1.0.0-beta.1",
-    "aurelia-metadata": "^1.0.0-beta.1",
-    "aurelia-pal": "^1.0.0-beta.1",
-    "aurelia-templating": "^1.0.0-beta.1"
-  },
   "devDependencies": {
     "aurelia-tools": "^0.1.12",
     "aurelia-bundler": "^0.3.2",
@@ -70,6 +63,7 @@
     "gulp-typedoc-extractor": "0.0.8",
     "gulp-yuidoc": "latest",
     "gulp-jshint": "latest",
+	"jshint": "^2.0.0",
     "jshint-stylish": "latest",
     "jasmine-core": "^2.3.4",
     "jspm": "^0.16.6",
