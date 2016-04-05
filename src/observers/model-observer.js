@@ -42,6 +42,7 @@ export class ModelObserver
         for (var property in model)
         {
             var typeOfData = this._getObjectType(model[property]);
+            console.log("type of Data", typeOfData, property);
             switch(typeOfData)
             {
                 case "object":
@@ -49,8 +50,16 @@ export class ModelObserver
                 break;
                 case "array":
                 {
+                    console.log("found an array");
                     var underlyingArray = model[property]();
                     underlyingArray.forEach((entry, index) => { this._getAllSubscriptions(underlyingArray[index], subscriptions); });
+                    let arraySubscription = this.bindingEngine.propertyObserver(model, property).subscribe;
+                    console.log("array sub", arraySubscription);
+                    if(arraySubscription)
+                    {
+                        console.log("pushing array sub");
+                        subscriptions.push(arraySubscription);
+                    }
                 }
                 break;
 

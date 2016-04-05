@@ -1,5 +1,14 @@
 export class App
 {
+    addEntry() {
+        this.DynamicDoughnutData.push({
+            value: 40,
+            color: "#B4FD5C",
+            highlight: "#FFC870",
+            label: "Other"
+        });
+    };
+
     constructor(){
         this.DynamicDoughnutData = [
             {
