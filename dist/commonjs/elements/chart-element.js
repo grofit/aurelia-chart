@@ -75,6 +75,16 @@ var ChartElement = (function () {
 
     _defineDecoratedPropertyDescriptor(this, "canvasElement", _instanceInitializers);
 
+    this._isSetup = false;
+
+    this.propertyChanged = function (propertyName, newValue, oldValue) {
+      if (_this._isSetup && _this.shouldUpdate) {
+        _this.refreshChart();
+        _this._modelObserver.unsubscribe();
+        _this.subscribeToChanges();
+      }
+    };
+
     this.refreshChart = function () {
       _this._activeChart.destroy();
       _this.createChart();
@@ -94,10 +104,20 @@ var ChartElement = (function () {
       this._canvasHeight = this.canvasElement.height;
 
       this.createChart();
+      this._isSetup = true;
 
       if (this.shouldUpdate) {
         this.subscribeToChanges();
       }
+    }
+  }, {
+    key: "detached",
+    value: function detached() {
+      if (this.shouldUpdate) {
+        this._modelObserver.unsubscribe();
+      }
+
+      this._isSetup = false;
     }
   }, {
     key: "createChart",

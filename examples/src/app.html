@@ -9,12 +9,15 @@
         <legend>Doughnut Chart via Element</legend>
         <chart id="some-dynamic-doughnut-chart" width="500" height="187" type="Doughnut" should-update="true" data.bind="DynamicDoughnutData" throttle="2000"></chart>
         <div>
-            <label>Red Value</label>
-            <input value.bind="DynamicDoughnutData[0].value" placeholder="Red Value"/>
-            <input value.bind="DynamicDoughnutData[1].value" placeholder="Green Value"/>
-            <input value.bind="DynamicDoughnutData[2].value" placeholder="Yellow Value"/>
+            <label>Values</label>
+            <div repeat.for="currentData of DynamicDoughnutData">
+                <input value.bind="currentData.value" placeholder="Value ${index}"/>
+            </div>
         </div>
+
         <p>Changing the above value should trigger a chart refresh after 2 seconds</p>
-        <a click.delegate="addEntry()">Add Entry</a>
+        <p>Although dynamically added entries will not be tracked currently</p>
+        <button click.delegate="addEntry()">Add Entry</button>
+        <button click.delegate="resetPieData()">Reset</button>
     </fieldset>
 </template>

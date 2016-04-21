@@ -20,6 +20,7 @@ export class ChartElement {
   _canvasHeight;
   _modelObserver;
   _numericConverter;
+  _isSetup = false;
 
   constructor(modelObserver) {
     this._modelObserver = modelObserver;
@@ -31,9 +32,26 @@ export class ChartElement {
     this._canvasHeight = this.canvasElement.height;
 
     this.createChart();
+    this._isSetup = true;
 
     if(this.shouldUpdate)
     { this.subscribeToChanges(); }
+  }
+
+  detached() {
+    if(this.shouldUpdate)
+    { this._modelObserver.unsubscribe(); }
+
+    this._isSetup = false;
+  }
+
+  propertyChanged = (propertyName, newValue, oldValue) => {
+    if(this._isSetup && this.shouldUpdate)
+    {
+      this.refreshChart();
+      this._modelObserver.unsubscribe();
+      this.subscribeToChanges();
+    }
   }
 
   createChart() {

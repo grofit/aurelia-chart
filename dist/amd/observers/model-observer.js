@@ -10,13 +10,14 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
     var ModelObserver = (function () {
-        function ModelObserver(bindingEngine) {
+        function ModelObserver(bindingEngine, observerLocator) {
             var _this = this;
 
             _classCallCheck(this, _ModelObserver);
 
             this.throttle = 100;
             this._throttleTimeout = 0;
+            this._activeSubscriptions = [];
 
             this.observe = function (model, onChange) {
                 var subscriptions = [];
@@ -36,11 +37,21 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
                 };
 
                 for (var i = 0; i < subscriptions.length; i++) {
-                    subscriptions[i](throttledHandler);
+                    var outstandingSubscription = subscriptions[i](throttledHandler);
+                    _this._activeSubscriptions.push(outstandingSubscription);
                 }
             };
 
+            this.unsubscribe = function () {
+                for (var i = 0; i < _this._activeSubscriptions.length; i++) {
+                    _this._activeSubscriptions[i].dispose();
+                }
+
+                _this._activeSubscriptions = [];
+            };
+
             this.bindingEngine = bindingEngine;
+            this.observerLocator = observerLocator;
         }
 
         _createClass(ModelObserver, [{
@@ -54,9 +65,14 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
             value: function _getAllSubscriptions(model, subscriptions) {
                 var _this2 = this;
 
+                if (Array.isArray(model)) {
+                    var subscription = this.bindingEngine.collectionObserver(model).subscribe;
+                    subscriptions.push(subscription);
+                }
+
                 for (var property in model) {
                     var typeOfData = this._getObjectType(model[property]);
-                    console.log("type of Data", typeOfData, property);
+
                     switch (typeOfData) {
                         case "object":
                             {
@@ -65,15 +81,13 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
                             break;
                         case "array":
                             {
-                                console.log("found an array");
                                 var underlyingArray = model[property]();
                                 underlyingArray.forEach(function (entry, index) {
                                     _this2._getAllSubscriptions(underlyingArray[index], subscriptions);
                                 });
+
                                 var arraySubscription = this.bindingEngine.propertyObserver(model, property).subscribe;
-                                console.log("array sub", arraySubscription);
                                 if (arraySubscription) {
-                                    console.log("pushing array sub");
                                     subscriptions.push(arraySubscription);
                                 }
                             }

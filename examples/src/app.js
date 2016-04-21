@@ -1,15 +1,14 @@
 export class App
 {
-    addEntry() {
-        this.DynamicDoughnutData.push({
-            value: 40,
-            color: "#B4FD5C",
-            highlight: "#FFC870",
-            label: "Other"
-        });
-    };
-
     constructor(){
+        this.DynamicDoughnutData = [];
+        this.SimpleLineData = {}
+
+        this.resetPieData();
+        this.resetLineData();
+    }
+
+    resetPieData() {
         this.DynamicDoughnutData = [
             {
                 value: 300,
@@ -29,8 +28,10 @@ export class App
                 highlight: "#FFC870",
                 label: "Yellow"
             }
-        ];
+        ]
+    }
 
+    resetLineData() {
         this.SimpleLineData = {
             labels: ["January", "February", "March", "April", "May", "June", "July"],
             datasets: [
@@ -56,6 +57,15 @@ export class App
                 }
             ]
         };
-
     }
+
+    addEntry() {
+        this.DynamicDoughnutData.push({
+            value: 40,
+            color: "#B4FD5C",
+            highlight: "#FFC870",
+            label: "Other"
+        });
+    };
+
 }
