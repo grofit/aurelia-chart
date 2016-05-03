@@ -73,7 +73,7 @@ var ModelObserver = (function () {
 
             for (var property in model) {
                 var typeOfData = this._getObjectType(model[property]);
-
+                console.log("type", typeOfData, property);
                 switch (typeOfData) {
                     case "object":
                         {
@@ -98,7 +98,7 @@ var ModelObserver = (function () {
                         {
                             var subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
                             if (subscription) {
-                                subscriptions.push(subscription);
+                                console.log("subscribing to", property, model[property]);subscriptions.push(subscription);
                             }
                         }
                         break;

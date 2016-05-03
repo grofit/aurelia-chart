@@ -14,6 +14,7 @@ export class ChartAttribute {
   _activeChart;
   _modelObserver;
   _isSetup = false;
+  _chartData;
 
   constructor(element, modelObserver) {
     this.element = element;
@@ -46,23 +47,33 @@ export class ChartAttribute {
     }
   }
 
+  get _isObserving() {
+    return this.shouldUpdate == true || this.shouldUpdate == "true";
+  }
+
+  get _clonedData() {
+    return JSON.parse(JSON.stringify(this.data));
+  }
+
   createChart() {
-    var chartData = {
+    this._chartData = {
       type: this.type,
-      data: JSON.parse(JSON.stringify(this.data)),
+      data: this._clonedData,
       options: this.nativeOptions
     };
 
-    this._activeChart = new Chart(this.element, chartData);
+    this._activeChart = new Chart(this.element, this._chartData);
+    this.refreshChart();
   };
 
   refreshChart = () => {
+    this._chartData.data = this._clonedData;
     this._activeChart.update();
+    this._activeChart.resize();
   };
 
   subscribeToChanges() {
     this._modelObserver.throttle = this.throttle || 100;
-    this._modelObserver.observe(this.data, this.refreshChart);
+    this._modelObserver.observe(this.data.datasets, this.refreshChart);
   };
-
 }

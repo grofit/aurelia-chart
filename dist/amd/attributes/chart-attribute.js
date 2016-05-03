@@ -74,7 +74,9 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
       };
 
       this.refreshChart = function () {
+        _this._chartData.data = _this._clonedData;
         _this._activeChart.update();
+        _this._activeChart.resize();
       };
 
       this.element = element;
@@ -105,19 +107,30 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
     }, {
       key: "createChart",
       value: function createChart() {
-        var chartData = {
+        this._chartData = {
           type: this.type,
-          data: JSON.parse(JSON.stringify(this.data)),
+          data: this._clonedData,
           options: this.nativeOptions
         };
 
-        this._activeChart = new _Chart["default"](this.element, chartData);
+        this._activeChart = new _Chart["default"](this.element, this._chartData);
+        this.refreshChart();
       }
     }, {
       key: "subscribeToChanges",
       value: function subscribeToChanges() {
         this._modelObserver.throttle = this.throttle || 100;
-        this._modelObserver.observe(this.data, this.refreshChart);
+        this._modelObserver.observe(this.data.datasets, this.refreshChart);
+      }
+    }, {
+      key: "_isObserving",
+      get: function get() {
+        return this.shouldUpdate == true || this.shouldUpdate == "true";
+      }
+    }, {
+      key: "_clonedData",
+      get: function get() {
+        return JSON.parse(JSON.stringify(this.data));
       }
     }], null, _instanceInitializers);
 

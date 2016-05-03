@@ -17,30 +17,31 @@ export class ChartElement {
   _activeChart;
   _modelObserver;
   _isSetup = false;
+  _chartData;
 
   constructor(modelObserver) {
     this._modelObserver = modelObserver;
   }
 
   attached() {
+    console.log("data", this.data);
     this.createChart();
     this._isSetup = true;
 
-    if(this.shouldUpdate == true)
+    if(this._isObserving)
     { this.subscribeToChanges(); }
   }
 
   detached() {
-    if(this.shouldUpdate == true)
+    if(this._isObserving)
     { this._modelObserver.unsubscribe(); }
 
     this._activeChart.destroy();
-
     this._isSetup = false;
   }
 
   propertyChanged = (propertyName, newValue, oldValue) => {
-    if(this._isSetup && this.shouldUpdate == true)
+    if(this._isSetup && this._isObserving)
     {
       this.refreshChart();
       this._modelObserver.unsubscribe();
@@ -48,22 +49,33 @@ export class ChartElement {
     }
   }
 
+  get _isObserving() {
+    return this.shouldUpdate == true || this.shouldUpdate == "true";
+  }
+
+  get _clonedData() {
+    return JSON.parse(JSON.stringify(this.data));
+  }
+
   createChart() {
-    var chartData = {
+    this._chartData = {
       type: this.type,
-      data: JSON.parse(JSON.stringify(this.data)),
+      data: this._clonedData,
       options: this.nativeOptions
     };
 
-    this._activeChart = new Chart(this.canvasElement, chartData);
+    this._activeChart = new Chart(this.canvasElement, this._chartData);
+    this.refreshChart();
   };
 
   refreshChart = () => {
+    this._chartData.data = this._clonedData;
     this._activeChart.update();
+    this._activeChart.resize();
   };
 
   subscribeToChanges() {
     this._modelObserver.throttle = this.throttle || 100;
-    this._modelObserver.observe(this.data, this.refreshChart);
+    this._modelObserver.observe(this.data.datasets, this.refreshChart);
   };
 }

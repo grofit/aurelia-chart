@@ -7,11 +7,11 @@
 
     <fieldset>
         <legend>Doughnut Chart via Element</legend>
-        <chart id="dynamic-doughnut-chart" type="line" should-update="false" data.bind="SimpleLineData"></chart>
+        <chart id="dynamic-doughnut-chart" type="doughnut" style="width: 50%; height: 50%; display: block;" should-update="true" throttle="2000" data.bind="DynamicDoughnutData"></chart>
         <div>
             <label>Values</label>
             <div repeat.for="currentData of DynamicDoughnutData.datasets[0].data">
-                <input value.bind="currentData" placeholder="Value ${index}"/>
+                <input value.bind="currentData" placeholder="Value ${$index + 1}"/>
             </div>
         </div>
 
