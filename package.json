@@ -26,7 +26,7 @@
       "aurelia-framework": "npm:aurelia-framework@^1.0.0-beta.1.1.2",
       "aurelia-metadata": "npm:aurelia-metadata@^1.0.0-beta.1.1.4",
       "aurelia-templating": "npm:aurelia-templating@^1.0.0-beta.1.1.1",
-      "chartjs": "github:nnnick/Chart.js@1.0.2"
+      "chartjs": "npm:chart.js@^2.0.2"
     },
     "devDependencies": {
       "aurelia-pal-browser": "npm:aurelia-pal-browser@^1.0.0-beta.1",

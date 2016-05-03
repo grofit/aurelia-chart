@@ -1,6 +1,5 @@
 import {inject, customAttribute, useView, bindable} from 'aurelia-framework'
 import {ModelObserver} from "../observers/model-observer"
-import {NumericConverter} from "../shared/numeric-converter"
 import Chart from "chartjs"
 
 @customAttribute('chart')
@@ -10,41 +9,36 @@ export class ChartAttribute {
   @bindable data;
   @bindable shouldUpdate;
   @bindable throttle;
-  @bindable nativeOptions;
+  @bindable nativeOptions = {};
 
   _activeChart;
-  _canvasWidth;
-  _canvasHeight;
   _modelObserver;
-  _numericConverter;
   _isSetup = false;
 
   constructor(element, modelObserver) {
     this.element = element;
     this._modelObserver = modelObserver;
-    this._numericConverter = new NumericConverter();
   }
 
   attached() {
-    this._canvasWidth = this.element.width;
-    this._canvasHeight = this.element.height;
-
     this.createChart();
     this._isSetup = true;
 
-    if(this.shouldUpdate)
+    if(this.shouldUpdate == true)
     { this.subscribeToChanges(); }
   }
 
   detached() {
-    if(this.shouldUpdate)
+    if(this.shouldUpdate == true)
     { this._modelObserver.unsubscribe(); }
+
+    this._activeChart.destroy();
 
     this._isSetup = false;
   }
 
   propertyChanged = (propertyName, newValue, oldValue) => {
-    if(this._isSetup && this.shouldUpdate)
+    if(this._isSetup && this.shouldUpdate == true)
     {
       this.refreshChart();
       this._modelObserver.unsubscribe();
@@ -53,17 +47,20 @@ export class ChartAttribute {
   }
 
   createChart() {
-    var context2d = this.element.getContext("2d");
-    var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data); // doesnt like string based numerics
-    this._activeChart = new Chart(context2d)[this.type](sanitisedData, this.nativeOptions);
+    var chartData = {
+      type: this.type,
+      data: JSON.parse(JSON.stringify(this.data)),
+      options: this.nativeOptions
+    };
+
+    console.log("ATToptions", chartData);
+    console.log("ATTcanvas", this.element);
+
+    this._activeChart = new Chart(this.element, chartData);
   };
 
   refreshChart = () => {
-    this._activeChart.destroy();
-
-    // This stops the chart shrinking into oblivion
-    this.element.width = this._canvasWidth;
-    this.element.height = this._canvasHeight;
+    this._activeChart.update();
   };
 
   subscribeToChanges() {

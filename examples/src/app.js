@@ -1,34 +1,31 @@
 export class App
 {
     constructor(){
-        this.DynamicDoughnutData = [];
-        this.SimpleLineData = {}
+        this.DynamicDoughnutData = {};
+        this.SimpleLineData = {};
 
         this.resetPieData();
         this.resetLineData();
     }
 
     resetPieData() {
-        this.DynamicDoughnutData = [
-            {
-                value: 300,
-                color:"#F7464A",
-                highlight: "#FF5A5E",
-                label: "Red"
-            },
-            {
-                value: 100,
-                color: "#46BFBD",
-                highlight: "#5AD3D1",
-                label: "Green"
-            },
-            {
-                value: 20,
-                color: "#FDB45C",
-                highlight: "#FFC870",
-                label: "Yellow"
-            }
-        ]
+        this.DynamicDoughnutData = {
+            labels: ["Red", "Green", "Yellow" ],
+            datasets: [
+                {
+                    data: [300, 50, 100],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56"
+                    ]
+                }]
+        };
     }
 
     resetLineData() {
@@ -36,9 +33,9 @@ export class App
             labels: ["January", "February", "March", "April", "May", "June", "July"],
             datasets: [
                 {
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
+                    label: "Healthy People",
+                    backgroundColor: "rgba(220,220,220,0.2)",
+                    borderColor: "rgba(220,220,220,1)",
                     pointColor: "rgba(220,220,220,1)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
@@ -46,9 +43,9 @@ export class App
                     data: [65, 59, 80, 81, 56, 55, 40]
                 },
                 {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
+                    label: "Ill People",
+                    backgroundColor: "rgba(151,187,205,0.2)",
+                    borderColor: "rgba(151,187,205,1)",
                     pointColor: "rgba(151,187,205,1)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
@@ -60,12 +57,9 @@ export class App
     }
 
     addEntry() {
-        this.DynamicDoughnutData.push({
-            value: 40,
-            color: "#B4FD5C",
-            highlight: "#FFC870",
-            label: "Other"
-        });
+        this.DynamicDoughnutData.labels.push("New Colour");
+        this.DynamicDoughnutData.datasets[0].data.push(50);
+        this.DynamicDoughnutData.datasets[0].backgroundColor.push("#B4FD5C");
     };
 
 }

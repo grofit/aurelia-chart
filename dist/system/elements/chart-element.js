@@ -1,7 +1,7 @@
-System.register(["aurelia-framework", "../observers/model-observer", "../shared/numeric-converter", "chartjs"], function (_export) {
+System.register(["aurelia-framework", "../observers/model-observer", "chartjs"], function (_export) {
   "use strict";
 
-  var inject, customElement, useView, bindable, ModelObserver, NumericConverter, Chart, ChartElement;
+  var inject, customElement, useView, bindable, ModelObserver, Chart, ChartElement;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -17,8 +17,6 @@ System.register(["aurelia-framework", "../observers/model-observer", "../shared/
       bindable = _aureliaFramework.bindable;
     }, function (_observersModelObserver) {
       ModelObserver = _observersModelObserver.ModelObserver;
-    }, function (_sharedNumericConverter) {
-      NumericConverter = _sharedNumericConverter.NumericConverter;
     }, function (_chartjs) {
       Chart = _chartjs["default"];
     }],
@@ -50,7 +48,9 @@ System.register(["aurelia-framework", "../observers/model-observer", "../shared/
         }, {
           key: "nativeOptions",
           decorators: [bindable],
-          initializer: null,
+          initializer: function initializer() {
+            return {};
+          },
           enumerable: true
         }, {
           key: "canvasElement",
@@ -79,7 +79,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "../shared/
           this._isSetup = false;
 
           this.propertyChanged = function (propertyName, newValue, oldValue) {
-            if (_this._isSetup && _this.shouldUpdate) {
+            if (_this._isSetup && _this.shouldUpdate == true) {
               _this.refreshChart();
               _this._modelObserver.unsubscribe();
               _this.subscribeToChanges();
@@ -87,49 +87,51 @@ System.register(["aurelia-framework", "../observers/model-observer", "../shared/
           };
 
           this.refreshChart = function () {
-            _this._activeChart.destroy();
-            _this.createChart();
-
-            _this.canvasElement.width = _this._canvasWidth;
-            _this.canvasElement.height = _this._canvasHeight;
+            console.log("refreshing");
+            _this._activeChart.update();
           };
 
           this._modelObserver = modelObserver;
-          this._numericConverter = new NumericConverter();
         }
 
         _createDecoratedClass(ChartElement, [{
           key: "attached",
           value: function attached() {
-            this._canvasWidth = this.canvasElement.width;
-            this._canvasHeight = this.canvasElement.height;
-
             this.createChart();
             this._isSetup = true;
 
-            if (this.shouldUpdate) {
+            if (this.shouldUpdate == true) {
               this.subscribeToChanges();
             }
           }
         }, {
           key: "detached",
           value: function detached() {
-            if (this.shouldUpdate) {
+            if (this.shouldUpdate == true) {
               this._modelObserver.unsubscribe();
             }
+
+            this._activeChart.destroy();
 
             this._isSetup = false;
           }
         }, {
           key: "createChart",
           value: function createChart() {
-            var context2d = this.canvasElement.getContext("2d");
-            var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data);
-            this._activeChart = new Chart(context2d)[this.type](sanitisedData, this.nativeOptions);
+            var chartData = {
+              type: this.type,
+              data: JSON.parse(JSON.stringify(this.data)),
+              options: this.nativeOptions
+            };
+
+            console.log("options", chartData);
+            console.log("canvas", this.canvasElement);
+            this._activeChart = new Chart(this.canvasElement, chartData);
           }
         }, {
           key: "subscribeToChanges",
           value: function subscribeToChanges() {
+            console.log("data", this.data);
             this._modelObserver.throttle = this.throttle || 100;
             this._modelObserver.observe(this.data, this.refreshChart);
           }

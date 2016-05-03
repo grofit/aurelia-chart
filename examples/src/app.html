@@ -1,17 +1,17 @@
 <template>
     <fieldset>
         <legend>Line Graph via Attribute</legend>
-        <canvas id="some-dynamic-doughnut-chart" width="500" height="187" chart="type: Line; 'should-update': false; data.bind: SimpleLineData"></canvas>
+        <canvas id="line-chart" chart="type: line; 'should-update': false; data.bind: SimpleLineData"></canvas>
         <p>Changing the data wont change this graph as it is not update-able</p>
     </fieldset>
 
     <fieldset>
         <legend>Doughnut Chart via Element</legend>
-        <chart id="some-dynamic-doughnut-chart" width="500" height="187" type="Doughnut" should-update="true" data.bind="DynamicDoughnutData" throttle="2000"></chart>
+        <chart id="dynamic-doughnut-chart" type="line" should-update="false" data.bind="SimpleLineData"></chart>
         <div>
             <label>Values</label>
-            <div repeat.for="currentData of DynamicDoughnutData">
-                <input value.bind="currentData.value" placeholder="Value ${index}"/>
+            <div repeat.for="currentData of DynamicDoughnutData.datasets[0].data">
+                <input value.bind="currentData" placeholder="Value ${index}"/>
             </div>
         </div>
 

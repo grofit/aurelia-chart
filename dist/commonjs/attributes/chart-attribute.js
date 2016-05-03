@@ -16,8 +16,6 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _observersModelObserver = require("../observers/model-observer");
 
-var _sharedNumericConverter = require("../shared/numeric-converter");
-
 var _chartjs = require("chartjs");
 
 var _chartjs2 = _interopRequireDefault(_chartjs);
@@ -49,7 +47,9 @@ var ChartAttribute = (function () {
   }, {
     key: "nativeOptions",
     decorators: [_aureliaFramework.bindable],
-    initializer: null,
+    initializer: function initializer() {
+      return {};
+    },
     enumerable: true
   }], null, _instanceInitializers);
 
@@ -71,7 +71,7 @@ var ChartAttribute = (function () {
     this._isSetup = false;
 
     this.propertyChanged = function (propertyName, newValue, oldValue) {
-      if (_this._isSetup && _this.shouldUpdate) {
+      if (_this._isSetup && _this.shouldUpdate == true) {
         _this.refreshChart();
         _this._modelObserver.unsubscribe();
         _this.subscribeToChanges();
@@ -79,45 +79,47 @@ var ChartAttribute = (function () {
     };
 
     this.refreshChart = function () {
-      _this._activeChart.destroy();
-
-      _this.element.width = _this._canvasWidth;
-      _this.element.height = _this._canvasHeight;
+      _this._activeChart.update();
     };
 
     this.element = element;
     this._modelObserver = modelObserver;
-    this._numericConverter = new _sharedNumericConverter.NumericConverter();
   }
 
   _createDecoratedClass(ChartAttribute, [{
     key: "attached",
     value: function attached() {
-      this._canvasWidth = this.element.width;
-      this._canvasHeight = this.element.height;
-
       this.createChart();
       this._isSetup = true;
 
-      if (this.shouldUpdate) {
+      if (this.shouldUpdate == true) {
         this.subscribeToChanges();
       }
     }
   }, {
     key: "detached",
     value: function detached() {
-      if (this.shouldUpdate) {
+      if (this.shouldUpdate == true) {
         this._modelObserver.unsubscribe();
       }
+
+      this._activeChart.destroy();
 
       this._isSetup = false;
     }
   }, {
     key: "createChart",
     value: function createChart() {
-      var context2d = this.element.getContext("2d");
-      var sanitisedData = this._numericConverter.convertAllDataToNumeric(this.data);
-      this._activeChart = new _chartjs2["default"](context2d)[this.type](sanitisedData, this.nativeOptions);
+      var chartData = {
+        type: this.type,
+        data: JSON.parse(JSON.stringify(this.data)),
+        options: this.nativeOptions
+      };
+
+      console.log("ATToptions", chartData);
+      console.log("ATTcanvas", this.element);
+
+      this._activeChart = new _chartjs2["default"](this.element, chartData);
     }
   }, {
     key: "subscribeToChanges",
