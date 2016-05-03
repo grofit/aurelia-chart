@@ -1,7 +1,7 @@
 System.register(["aurelia-framework", "../observers/model-observer", "chartjs"], function (_export) {
   "use strict";
 
-  var inject, customAttribute, useView, bindable, ModelObserver, Chart, ChartAttribute;
+  var inject, customAttribute, bindable, ModelObserver, Chart, ChartAttribute;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -13,7 +13,6 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
     setters: [function (_aureliaFramework) {
       inject = _aureliaFramework.inject;
       customAttribute = _aureliaFramework.customAttribute;
-      useView = _aureliaFramework.useView;
       bindable = _aureliaFramework.bindable;
     }, function (_observersModelObserver) {
       ModelObserver = _observersModelObserver.ModelObserver;
@@ -116,9 +115,6 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
               data: JSON.parse(JSON.stringify(this.data)),
               options: this.nativeOptions
             };
-
-            console.log("ATToptions", chartData);
-            console.log("ATTcanvas", this.element);
 
             this._activeChart = new Chart(this.element, chartData);
           }

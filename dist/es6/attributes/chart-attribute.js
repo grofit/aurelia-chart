@@ -1,4 +1,4 @@
-import {inject, customAttribute, useView, bindable} from 'aurelia-framework'
+import {inject, customAttribute, bindable} from 'aurelia-framework'
 import {ModelObserver} from "../observers/model-observer"
 import Chart from "chartjs"
 
@@ -52,9 +52,6 @@ export class ChartAttribute {
       data: JSON.parse(JSON.stringify(this.data)),
       options: this.nativeOptions
     };
-
-    console.log("ATToptions", chartData);
-    console.log("ATTcanvas", this.element);
 
     this._activeChart = new Chart(this.element, chartData);
   };

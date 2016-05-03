@@ -81,7 +81,6 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
       };
 
       this.refreshChart = function () {
-        console.log("refreshing");
         _this._activeChart.update();
       };
 
@@ -118,14 +117,11 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
           options: this.nativeOptions
         };
 
-        console.log("options", chartData);
-        console.log("canvas", this.canvasElement);
         this._activeChart = new _Chart["default"](this.canvasElement, chartData);
       }
     }, {
       key: "subscribeToChanges",
       value: function subscribeToChanges() {
-        console.log("data", this.data);
         this._modelObserver.throttle = this.throttle || 100;
         this._modelObserver.observe(this.data, this.refreshChart);
       }

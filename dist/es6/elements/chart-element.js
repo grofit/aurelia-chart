@@ -55,18 +55,14 @@ export class ChartElement {
       options: this.nativeOptions
     };
 
-    console.log("options", chartData);
-    console.log("canvas", this.canvasElement);
     this._activeChart = new Chart(this.canvasElement, chartData);
   };
 
   refreshChart = () => {
-    console.log("refreshing");
     this._activeChart.update();
   };
 
   subscribeToChanges() {
-    console.log("data", this.data);
     this._modelObserver.throttle = this.throttle || 100;
     this._modelObserver.observe(this.data, this.refreshChart);
   };

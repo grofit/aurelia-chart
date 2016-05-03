@@ -116,9 +116,6 @@ var ChartAttribute = (function () {
         options: this.nativeOptions
       };
 
-      console.log("ATToptions", chartData);
-      console.log("ATTcanvas", this.element);
-
       this._activeChart = new _chartjs2["default"](this.element, chartData);
     }
   }, {

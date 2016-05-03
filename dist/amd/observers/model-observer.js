@@ -20,7 +20,6 @@ define(["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
             this._activeSubscriptions = [];
 
             this.observe = function (model, onChange) {
-                console.log("OBSERVING");
                 var subscriptions = [];
                 _this._getAllSubscriptions(model, subscriptions);
 

@@ -24,7 +24,6 @@ System.register(["aurelia-framework"], function (_export) {
                     this._activeSubscriptions = [];
 
                     this.observe = function (model, onChange) {
-                        console.log("OBSERVING");
                         var subscriptions = [];
                         _this._getAllSubscriptions(model, subscriptions);
 

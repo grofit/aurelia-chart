@@ -16,7 +16,6 @@ export class ModelObserver
 
     observe = (model, onChange) =>
     {
-        console.log("OBSERVING");
         var subscriptions = [];
         this._getAllSubscriptions(model, subscriptions);
 

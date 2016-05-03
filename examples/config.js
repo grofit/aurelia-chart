@@ -1,6 +1,6 @@
 System.config({
   defaultJSExtensions: true,
-  transpiler: "traceur",
+  transpiler: "babel",
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
@@ -22,8 +22,6 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "chartjs": "npm:chart.js@2.0.2",
     "core-js": "npm:core-js@2.3.0",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.93",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
