@@ -24,7 +24,6 @@ export class ChartElement {
   }
 
   attached() {
-    console.log("data", this.data);
     this.createChart();
     this._isSetup = true;
 

@@ -10,8 +10,8 @@
         <chart id="dynamic-doughnut-chart" type="doughnut" style="width: 50%; height: 50%; display: block;" should-update="true" throttle="2000" data.bind="DynamicDoughnutData"></chart>
         <div>
             <label>Values</label>
-            <div repeat.for="currentData of DynamicDoughnutData.datasets[0].data">
-                <input value.bind="currentData" placeholder="Value ${$index + 1}"/>
+            <div repeat.for="i of DynamicDoughnutData.datasets[0].data.length">
+                <input value.bind="DynamicDoughnutData.datasets[0].data[i]" placeholder="Value ${$index + 1}"/>
             </div>
         </div>
 

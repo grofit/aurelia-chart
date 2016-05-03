@@ -59,7 +59,6 @@ export class ModelObserver
         for (var property in model)
         {
             var typeOfData = this._getObjectType(model[property]);
-            console.log("type", typeOfData, property);
             switch(typeOfData)
             {
                 case "object":
@@ -80,7 +79,7 @@ export class ModelObserver
                 {
                     let subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
                     if(subscription)
-                    { console.log("subscribing to", property, model[property]); subscriptions.push(subscription); }
+                    { subscriptions.push(subscription); }
                 }
                 break;
             }

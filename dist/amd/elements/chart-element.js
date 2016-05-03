@@ -92,7 +92,6 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
     _createDecoratedClass(ChartElement, [{
       key: "attached",
       value: function attached() {
-        console.log("data", this.data);
         this.createChart();
         this._isSetup = true;
 

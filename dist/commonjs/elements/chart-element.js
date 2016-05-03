@@ -97,7 +97,6 @@ var ChartElement = (function () {
   _createDecoratedClass(ChartElement, [{
     key: "attached",
     value: function attached() {
-      console.log("data", this.data);
       this.createChart();
       this._isSetup = true;
 
