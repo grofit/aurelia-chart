@@ -1,12 +1,15 @@
 # Aurelia-Chart
 
-A simple binding to let aurelia and chartjs come together for the greater good.
+A simple binding to let aurelia and chartjs (2.x) come together for the greater good.
 
 It supports the basic graph types and should work with any custom ones.
 
-One major reason why this is a good idea is because this way you do not need your view model
-knowing about your DOM elements, as the binding takes care of that, so you just expose
-the meaningful stuff.
+## IMPORTANT CHANGES
+
+Since version 0.2.0 of this library it has moved over to use the newer chartjs 2.x, which means schemas
+are now slightly different for certain graphs (like pies) and some of the properties have been renamed. 
+So if you need to stick with the old chartjs (1.x) syntax use versions of this library < 0.2.0. Also in
+the latest chartjs the type syntax is lower case now, so you no longer need to worry about caps.
 
 ## Install
 
@@ -16,7 +19,7 @@ use JSPM:
 
 then include the plugin in aurelia
 
-`aurelia.use.plugin("grofit/aurelia-chart");`
+`aurelia.use.plugin("aurelia-chart");`
 
 ## Example
 
@@ -32,48 +35,31 @@ You can see the code and everything in the examples folder!
 So there is a lot of magic behind the scenes to allow for observable hook-ins, there are a few issues
 which require a bit of advance warning.
 
-* If you are going to dynamically update your data, set a width/height on your canvas
-
-This is because ChartJS seems to freak out when its destroyed and recreated and will otherwise shrink
-into oblivion, we manually cache the desired width and height to stop this happening
-
-* Do not use textual data for values
-
-ChartJS can only handle numeric data, and we try to account for this when you receive input via bindings
-as by default input values are a string, ChartJS dislikes this, so we have to go through the generated
-data and manually replace textual instances of numbers to actual numbers.
-
 * It is advised you set a throttle when you use `should-update`, and a graph will only update if `should-update` is true
 
 It is a bit more resource intensive than we would like dynamically updating the data in the charts, it is not
 super meltdown but it can slow things down if you are changing a lot of data in a short space of time. So it is
 recommended to put a throttle on for at least 100 or higher to make sure you are not refreshing too much.
 
-* Make sure the type matches the caps of the desired type
-
-If you want a Pie chart make sure you do `type: 'Pie'` not `type: 'pie'` as it will not recognise the method and
-will fall over. There was an initial fix to allow you to put in whatever case you wanted but then we realised
-`PolarArea` would not work as it would end up as `Polararea` so we opted to leave that out for you to manage.
-
 ## Usage
 The element expects a type element describing what type of chart you want and the data you wish to expose:
 ```
-<chart type="Bar" data.bind="myData" }"></chart>
+<chart type="bar" data.bind="myData"></chart>
 ```
 
 Or it can be called with a options if you require more control over the chart:
 ```
-<chart type="Pie" data.bind="myData" native-options.bind="{ segmentShowStroke: true, segmentStrokeColor: '#fff', segmentStrokeWidth: 2 } }"></chart>
+<chart type="pie" data.bind="myData" native-options.bind="{ segmentShowStroke: true, segmentStrokeColor: '#fff', segmentStrokeWidth: 2 }"></chart>
 ```
 
 Or you can tell it to listen to observable changes: (Not working due to re-structuring of aurelia bindings atm)
 ```
-<chart type="Pie" data.bind="myData" should-update="true" throttle="100" }"></chart>
+<chart type="pie" data.bind="myData" should-update="true" throttle="100"></chart>
 ```
 
 Finally there is also support for attributes directly on the canvas:
 ```
-<canvas chart="type: Pie; data.bind: myData; should-update: true; throttle: 100;"></canvas>
+<canvas chart="type: pie; data.bind: myData; should-update: true; throttle: 100;"></canvas>
 ```
 
 So you can have finer grained control over the element yourself if needed.
