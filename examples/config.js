@@ -12,7 +12,7 @@ System.config({
   },
   map: {
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.0-beta.1.2.0",
-    "aurelia-chart": "../dist/commonjs/",
+    "aurelia-chart": "../dist/commonjs",
     "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1.2.2",
     "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.2.2",
     "aurelia-metadata": "npm:aurelia-metadata@1.0.0-beta.1.2.0",
