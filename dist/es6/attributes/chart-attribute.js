@@ -39,7 +39,7 @@ export class ChartAttribute {
   }
 
   propertyChanged = (propertyName, newValue, oldValue) => {
-    if(this._isSetup && this.shouldUpdate == true)
+    if(this._isSetup && _isObserving)
     {
       this.refreshChart();
       this._modelObserver.unsubscribe();

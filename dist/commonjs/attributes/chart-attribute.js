@@ -71,7 +71,7 @@ var ChartAttribute = (function () {
     this._isSetup = false;
 
     this.propertyChanged = function (propertyName, newValue, oldValue) {
-      if (_this._isSetup && _this.shouldUpdate == true) {
+      if (_this._isSetup && _isObserving) {
         _this.refreshChart();
         _this._modelObserver.unsubscribe();
         _this.subscribeToChanges();
