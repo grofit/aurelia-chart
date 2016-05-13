@@ -25,7 +25,7 @@ export class ChartAttribute {
     this.createChart();
     this._isSetup = true;
 
-    if(this.shouldUpdate == true)
+    if(this._isObserving)
     { this.subscribeToChanges(); }
   }
 
@@ -39,7 +39,7 @@ export class ChartAttribute {
   }
 
   propertyChanged = (propertyName, newValue, oldValue) => {
-    if(this._isSetup && _isObserving)
+    if(this._isSetup && this._isObserving)
     {
       this.refreshChart();
       this._modelObserver.unsubscribe();
@@ -74,6 +74,6 @@ export class ChartAttribute {
 
   subscribeToChanges() {
     this._modelObserver.throttle = this.throttle || 100;
-    this._modelObserver.observe(this.data.datasets, this.refreshChart);
+    this._modelObserver.observe(this.data, this.refreshChart);
   };
 }

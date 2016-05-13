@@ -71,7 +71,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
           this._isSetup = false;
 
           this.propertyChanged = function (propertyName, newValue, oldValue) {
-            if (_this._isSetup && _isObserving) {
+            if (_this._isSetup && _this._isObserving) {
               _this.refreshChart();
               _this._modelObserver.unsubscribe();
               _this.subscribeToChanges();
@@ -94,7 +94,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
             this.createChart();
             this._isSetup = true;
 
-            if (this.shouldUpdate == true) {
+            if (this._isObserving) {
               this.subscribeToChanges();
             }
           }
@@ -125,7 +125,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chartjs"],
           key: "subscribeToChanges",
           value: function subscribeToChanges() {
             this._modelObserver.throttle = this.throttle || 100;
-            this._modelObserver.observe(this.data.datasets, this.refreshChart);
+            this._modelObserver.observe(this.data, this.refreshChart);
           }
         }, {
           key: "_isObserving",
