@@ -10,7 +10,7 @@
     "charts"
   ],
   "license": "MIT",
-  "main": "index",
+  "main": "dist/commonjs/index.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/grofit/aurelia-chart"
