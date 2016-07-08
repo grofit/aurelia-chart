@@ -15,7 +15,7 @@ the latest chartjs the type syntax is lower case now, so you no longer need to w
 
 use JSPM:
 
-`jspm install github:grofit/aurelia-chart`
+`jspm install npm:aurelia-chart`
 
 then include the plugin in aurelia
 
