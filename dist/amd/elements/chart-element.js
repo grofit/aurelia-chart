@@ -1,4 +1,4 @@
-define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"], function (exports, _aureliaFramework, _observersModelObserver, _chartjs) {
+define(["exports", "aurelia-framework", "../observers/model-observer", "chart.js"], function (exports, _aureliaFramework, _observersModelObserver, _chartJs) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -13,7 +13,7 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chartjs"
 
   function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
-  var _Chart = _interopRequireDefault(_chartjs);
+  var _Chart = _interopRequireDefault(_chartJs);
 
   var ChartElement = (function () {
     var _instanceInitializers = {};

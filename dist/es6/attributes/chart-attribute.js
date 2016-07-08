@@ -1,6 +1,6 @@
 import {inject, customAttribute, bindable} from 'aurelia-framework'
 import {ModelObserver} from "../observers/model-observer"
-import Chart from "chartjs"
+import Chart from "chart.js"
 
 @customAttribute('chart')
 @inject(Element, ModelObserver)

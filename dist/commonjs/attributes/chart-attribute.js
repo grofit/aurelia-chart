@@ -16,9 +16,9 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _observersModelObserver = require("../observers/model-observer");
 
-var _chartjs = require("chartjs");
+var _chartJs = require("chart.js");
 
-var _chartjs2 = _interopRequireDefault(_chartjs);
+var _chartJs2 = _interopRequireDefault(_chartJs);
 
 var ChartAttribute = (function () {
   var _instanceInitializers = {};
@@ -118,7 +118,7 @@ var ChartAttribute = (function () {
         options: this.nativeOptions
       };
 
-      this._activeChart = new _chartjs2["default"](this.element, this._chartData);
+      this._activeChart = new _chartJs2["default"](this.element, this._chartData);
       this.refreshChart();
     }
   }, {
