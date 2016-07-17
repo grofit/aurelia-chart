@@ -1,0 +1,25 @@
+<template>
+    <fieldset>
+        <legend>Line Graph via Attribute</legend>
+        <canvas id="line-chart" chart="type: line; should-update: false; data.bind: SimpleLineData"></canvas>
+        <p>Changing the data wont change this graph as it is not update-able</p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Doughnut Chart via Element</legend>
+        <chart id="dynamic-doughnut-chart" type="doughnut" style="width: 50%; height: 50%; display: block;" should-update="true" throttle="2000" data.bind="DynamicDoughnutData"></chart>
+        <chart id="dynamic-pie-chart" type="pie" style="width: 50%; height: 50%; display: block;" should-update="true" throttle="2000" data.bind="DynamicDoughnutData"></chart>
+        <div>
+            <label>Values</label>
+            <div repeat.for="i of DynamicDoughnutData.datasets[0].data.length">
+                <input value.bind="DynamicDoughnutData.datasets[0].data[i]" placeholder="Value ${$index + 1}"/>
+            </div>
+        </div>
+
+        <p>Both charts are using the same dataset behind the scenes, so changing one will change both.</p>
+        <p>Changing the above value should trigger a chart refresh after 2 seconds</p>
+        <p>Although dynamically added entries will not be tracked currently</p>
+        <button click.delegate="addEntry()">Add Entry</button>
+        <button click.delegate="resetPieData()">Reset</button>
+    </fieldset>
+</template>
