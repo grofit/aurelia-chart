@@ -16,15 +16,22 @@ the latest chartjs the type syntax is lower case now, so you no longer need to w
 ### JSPM
 use JSPM:
 
-`jspm install npm:aurelia-chart`
+```javascript
+jspm install npm:aurelia-chart
+```
 
 then include the plugin in aurelia
 
-`aurelia.use.plugin("aurelia-chart");`
+```javascript
+aurelia.use.plugin("aurelia-chart");
+```
 
 ### Webpack
 use npm to install Aurelia-Chart
-`npm install aurelia-chart --save`
+
+```javascript
+npm install aurelia-chart --save
+```
 
 then modify your `package.json` to include the Aurelia-Chart resources
 ```javascript
