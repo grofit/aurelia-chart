@@ -23,8 +23,10 @@ then include the plugin in aurelia
 `aurelia.use.plugin("aurelia-chart");`
 
 ### Webpack
+use npm to install Aurelia-Chart
 `npm install aurelia-chart --save`
 
+then modify your `package.json` to include the Aurelia-Chart resources
 ```javascript
 dependencies {
  ...
