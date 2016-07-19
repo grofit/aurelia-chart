@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "aurelia-tools": "^0.1.12",
-    "aurelia-bundler": "^0.3.2",
     "babel-dts-generator": "^0.2.17",
     "babel-eslint": "^4.1.1",
     "browser-sync": "^2.9.4",

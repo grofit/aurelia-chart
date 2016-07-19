@@ -1,28 +1,12 @@
 {
-  "name": "aurelia-chart-webpack",
-  "version": "0.2.5",
-  "description": "Aurelia-Chart Webpack demo.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.config.js --hot --inline --progress --devtool eval",
-    "build": "webpack --config webpack.config.js --progress --profile",
-    "prod": "webpack -p --config webpack.prod.config.js --progress --devtool source-map",
-    "start": "webpack-dev-server --config webpack.config.js --hot --inline --progress --devtool eval",
-    "test": "karma start",
-    "webdriver:update": "./node_modules/.bin/webdriver-manager update",
-    "webdriver:start": "./node_modules/.bin/webdriver-manager start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/aurelia/skeleton-navigation.git"
+    "build": "webpack --config webpack.config.js bundle.js"
   },
   "keywords": [
     "aurelia-chart",
-    "skeleton",
     "webpack"
   ],
-  "author": "Martijn Boland",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/grofit/aurelia-chart/issues"
   },

@@ -53,7 +53,8 @@ dependencies {
 After MANY hours of soul destroying asking of questions and finding out system.js seems to have a weird bug,
 there is now a space age example available for you to see:
 
-[View Example](https://rawgit.com/grofit/aurelia-chart/master/examples/index.html)
+[View JSPM Example](https://rawgit.com/grofit/aurelia-chart/master/examples/jspm/index.html)
+[View Webpack Example](https://rawgit.com/grofit/aurelia-chart/master/examples/webpack/index.html)
 
 You can see the code and everything in the examples folder!
 

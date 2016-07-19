@@ -11,8 +11,8 @@ System.config({
     }
   },
   map: {
-    "aurelia-chart": "../dist/commonjs/",
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.0-rc.1.0.1",
+    "aurelia-chart": "../../dist/commonjs/",
     "aurelia-framework": "npm:aurelia-framework@1.0.0-rc.1.0.1",
     "aurelia-pal-browser": "npm:aurelia-pal-browser@1.0.0-rc.1.0.0",
     "babel": "npm:babel-core@5.8.38",
@@ -212,7 +212,7 @@ System.config({
     }
   },
   bundles: {
-    "aurelia-bundle.min.js": [
+    "example-bundle.min.js": [
       "github:jspm/nodelibs-buffer@0.1.0.js",
       "github:jspm/nodelibs-buffer@0.1.0/index.js",
       "github:jspm/nodelibs-process@0.1.2.js",

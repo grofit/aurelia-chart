@@ -1,9 +1,8 @@
 var gulp = require('gulp');
 var bundler = require('aurelia-bundler');
-var paths = require("../paths");
 
 var bundles = {
-    "aurelia-bundle.min": {
+    "example-bundle.min": {
         "includes": [
             "aurelia-bootstrapper",
             "aurelia-dependency-injection",
@@ -30,8 +29,8 @@ var bundles = {
 
 var config = {
     force: true,
-    baseURL: "./examples",
-    configPath: './examples/config.js',
+    baseURL: "./",
+    configPath: './config.js',
     bundles: bundles
 };
 
@@ -39,6 +38,8 @@ gulp.task('unbundle:example', function() {
     return bundler.unbundle(config);
 });
 
-gulp.task('bundle:example', ['build', 'unbundle:example'], function() {
+gulp.task('bundle:example', ['unbundle:example'], function() {
     return bundler.bundle(config);
 });
+
+gulp.task('default', ['bundle:example']);
