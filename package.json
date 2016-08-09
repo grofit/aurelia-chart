@@ -79,5 +79,14 @@
     "vinyl": "^0.5.3",
     "vinyl-paths": "^1.0.0",
     "yargs": "^3.21.0"
+  },
+  "aurelia": {
+    "build": {
+      "resources": [
+        "aurelia-chart/elements/chart-element",
+        "aurelia-chart/attributes/chart-attribute"
+      ]
+    }
   }
+}
 }
