@@ -1,6 +1,6 @@
 {
 	"name": "aurelia-ugchart",
-	"version": "0.2.5b",
+	"version": "0.2.7",
 	"registry": "jspm",
 	"description": "A simple element to handle showing charts (uses chart js behind the scenes)",
 	"keywords": [
@@ -10,7 +10,7 @@
 		"charts"
 	],
 	"license": "MIT",
-	"main": "dist/amd/index.js",
+	"main": "dist/commonjs/index.js",
 	"repository": {
 		"type": "git",
 		"url": "http://github.com/urosg80/aurelia-chart"
