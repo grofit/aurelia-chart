@@ -1,5 +1,5 @@
 {
-	"name": "aurelia-chart",
+	"name": "aurelia-ugchart",
 	"version": "0.2.5",
 	"registry": "jspm",
 	"description": "A simple element to handle showing charts (uses chart js behind the scenes)",
@@ -13,16 +13,15 @@
 	"main": "dist/commonjs/index.js",
 	"repository": {
 		"type": "git",
-		"url": "http://github.com/grofit/aurelia-chart"
+		"url": "http://github.com/urosg80/aurelia-chart"
 	},
-	"jspmNodeConversion": false,
 	"jspm": {
 		"registry": "npm",
 		"jspmPackage": "true",
-		"main": "aurelia-chart",
+		"main": "aurelia-ugchart",
 		"format": "amd",
 		"directories": {
-			"lib": "dist/amd"
+			"dist": "dist/amd"
 		},
 		"dependencies": {
 			"aurelia-framework": "npm:aurelia-framework@^1.0.0-rc.1.0.1",
@@ -87,8 +86,8 @@
 	"aurelia": {
 		"build": {
 			"resources": [
-				"aurelia-chart/elements/chart-element",
-				"aurelia-chart/attributes/chart-attribute"
+				"aurelia-ugchart/elements/chart-element",
+				"aurelia-ugchart/attributes/chart-attribute"
 			]
 		}
 	}
