@@ -1,6 +1,6 @@
 {
-	"name": "aurelia-ugchart",
-	"version": "0.2.7",
+	"name": "aurelia-chart",
+	"version": "0.2.6",
 	"registry": "jspm",
 	"description": "A simple element to handle showing charts (uses chart js behind the scenes)",
 	"keywords": [
@@ -10,19 +10,16 @@
 		"charts"
 	],
 	"license": "MIT",
-	"main": "dist/commonjs/index.js",
+	"main": "dist/commonjs/aurelia-chart.js",
 	"repository": {
 		"type": "git",
 		"url": "http://github.com/urosg80/aurelia-chart"
 	},
+	"jspmNodeConversion": false,
 	"jspm": {
-		"registry": "npm",
-		"jspmPackage": "true",
-		"main": "aurelia-ugchart",
-		"format": "amd",
 		"directories": {
-			"dist": "dist/amd"
-		},
+			"lib": "dist/system"
+    	},	
 		"dependencies": {
 			"aurelia-framework": "npm:aurelia-framework@^1.0.0-rc.1.0.1",
 			"chart.js": "npm:chart.js@^2.0.2"
