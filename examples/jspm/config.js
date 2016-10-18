@@ -7,7 +7,7 @@ System.config({
   },
   packages: {
     "aurelia-chart": {
-      "main": "index.js"
+      "main": "aurelia-chart.js"
     }
   },
   map: {
