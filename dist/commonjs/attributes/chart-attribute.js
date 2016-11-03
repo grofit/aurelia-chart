@@ -46,7 +46,7 @@ var ChartAttribute = (function () {
     enumerable: true
   }, {
     key: "nativeOptions",
-    decorators: [_aureliaFramework.bindable],
+    decorators: [(0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay })],
     initializer: function initializer() {
       return {};
     },
@@ -119,6 +119,7 @@ var ChartAttribute = (function () {
       };
 
       this._activeChart = new _chartJs2["default"](this.element, this._chartData);
+      this.nativeOptions = this._activeChart.options;
       this.refreshChart();
     }
   }, {

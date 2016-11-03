@@ -41,7 +41,7 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chart.js
       enumerable: true
     }, {
       key: "nativeOptions",
-      decorators: [_aureliaFramework.bindable],
+      decorators: [(0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay })],
       initializer: function initializer() {
         return {};
       },
@@ -114,6 +114,7 @@ define(["exports", "aurelia-framework", "../observers/model-observer", "chart.js
         };
 
         this._activeChart = new _Chart["default"](this.element, this._chartData);
+        this.nativeOptions = this._activeChart.options;
         this.refreshChart();
       }
     }, {

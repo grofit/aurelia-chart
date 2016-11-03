@@ -1,7 +1,7 @@
 System.register(["aurelia-framework", "../observers/model-observer", "chart.js"], function (_export) {
   "use strict";
 
-  var inject, customElement, useView, bindable, ModelObserver, Chart, ChartElement;
+  var inject, customElement, useView, bindable, bindingMode, ModelObserver, Chart, ChartElement;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -15,6 +15,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chart.js"]
       customElement = _aureliaFramework.customElement;
       useView = _aureliaFramework.useView;
       bindable = _aureliaFramework.bindable;
+      bindingMode = _aureliaFramework.bindingMode;
     }, function (_observersModelObserver) {
       ModelObserver = _observersModelObserver.ModelObserver;
     }, function (_chartJs) {
@@ -47,7 +48,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chart.js"]
           enumerable: true
         }, {
           key: "nativeOptions",
-          decorators: [bindable],
+          decorators: [bindable({ defaultBindingMode: bindingMode.twoWay })],
           initializer: function initializer() {
             return {};
           },
@@ -125,6 +126,7 @@ System.register(["aurelia-framework", "../observers/model-observer", "chart.js"]
             };
 
             this._activeChart = new Chart(this.canvasElement, this._chartData);
+            this.nativeOptions = this._activeChart.options;
             this.refreshChart();
           }
         }, {
