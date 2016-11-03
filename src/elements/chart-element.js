@@ -1,4 +1,4 @@
-import {inject, customElement, useView, bindable} from 'aurelia-framework'
+import {inject, customElement, useView, bindable, bindingMode} from 'aurelia-framework'
 import {ModelObserver} from "../observers/model-observer"
 import Chart from "chart.js"
 
@@ -10,7 +10,7 @@ export class ChartElement {
   @bindable data;
   @bindable shouldUpdate;
   @bindable throttle;
-  @bindable nativeOptions = {};
+  @bindable({defaultBindingMode: bindingMode.twoWay}) nativeOptions = {};
 
   @bindable canvasElement;
 
@@ -64,6 +64,7 @@ export class ChartElement {
     };
 
     this._activeChart = new Chart(this.canvasElement, this._chartData);
+    this.nativeOptions = this._activeChart.options;
     this.refreshChart();
   };
 
