@@ -1,6 +1,6 @@
 {
   "name": "aurelia-chart",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "registry": "jspm",
   "description": "A simple element to handle showing charts (uses chart js behind the scenes)",
   "keywords": [
@@ -83,8 +83,8 @@
   "aurelia": {
     "build": {
       "resources": [
-        "aurelia-ugchart/elements/chart-element",
-        "aurelia-ugchart/attributes/chart-attribute"
+        "aurelia-chart/elements/chart-element",
+        "aurelia-chart/attributes/chart-attribute"
       ]
     }
   }
