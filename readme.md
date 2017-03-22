@@ -80,7 +80,7 @@ Or it can be called with a options if you require more control over the chart:
 <chart type="pie" data.bind="myData" native-options.bind="{ segmentShowStroke: true, segmentStrokeColor: '#fff', segmentStrokeWidth: 2 }"></chart>
 ```
 
-Or you can tell it to listen to observable changes: (Not working due to re-structuring of aurelia bindings atm)
+Or you can tell it to listen to observable changes:
 ```
 <chart type="pie" data.bind="myData" should-update="true" throttle="100"></chart>
 ```
