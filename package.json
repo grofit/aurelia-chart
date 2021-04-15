@@ -1,91 +1,51 @@
 {
-  "name": "aurelia-chart",
-  "version": "0.2.7",
-  "registry": "jspm",
-  "description": "A simple element to handle showing charts (uses chart js behind the scenes)",
-  "keywords": [
-    "aurelia",
-    "elements",
-    "attributes",
-    "charts"
-  ],
-  "license": "MIT",
-  "main": "dist/commonjs/index.js",
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/grofit/aurelia-chart"
-  },
-  "jspmNodeConversion": false,
-  "jspm": {
-    "directories": {
-      "lib": "dist/system"
-    },
-    "dependencies": {
-      "aurelia-framework": "npm:aurelia-framework@^1.0.0",
-      "chart.js": "npm:chart.js@^2.0.2"
+    "name": "aurelia-chart-monorepo",
+    "private": true,
+    "version": "0.2.7",
+    "workspaces": [
+        "packages/aurelia-chart",
+        "packages/demo"
+    ],
+    "scripts": {
+        "lint": "eslint -c .eslintrc.js packages/**/src/*.ts",
+        "build": "lage run build --scope @aurelia-mdc-web/* --no-cache --no-deps",
+        "start": "cd packages/demo && npm start",
+        "doc": "lage run doc",
+        "changelog": "cross-env conventional-changelog -p angular -i docs/CHANGELOG.md -s",
+        "deploy": "cd packages/demo && npm run build:demo && cd ../.. && deploy.sh",
+        "update-versions:root": "ts-node -P tsconfig.scripts.json scripts/update-versions.ts",
+        "update-versions": "lage run update-versions",
+        "publish:latest": "lage run publish:latest"
     },
     "devDependencies": {
-      "aurelia-pal-browser": "npm:aurelia-pal-browser@^1.0.0",
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^2.0.3",
-      "text": "github:systemjs/plugin-text@^0.0.7"
+        "@typescript-eslint/eslint-plugin": "^4.22.0",
+        "@typescript-eslint/parser": "^4.22.0",
+        "aurelia-bootstrapper": "^2.3.3",
+        "aurelia-event-aggregator": "^1.0.3",
+        "aurelia-framework": "^1.3.1",
+        "aurelia-history-browser": "^1.4.0",
+        "aurelia-logging-console": "^1.1.1",
+        "aurelia-templating-binding": "^1.5.3",
+        "aurelia-templating-resources": "^1.13.1",
+        "aurelia-templating-router": "^1.4.0",
+        "aurelia-webpack-plugin": "^4.0.0",
+        "chart.js": "^3.1.0",
+        "concurrently": "^6.0.2",
+        "conventional-changelog-cli": "^2.1.1",
+        "copyfiles": "^2.4.1",
+        "eslint": "^7.24.0",
+        "eslint-plugin-compat": "^3.9.0",
+        "eslint-plugin-import": "^2.22.1",
+        "html-loader": "^1.3.2",
+        "html-webpack-plugin": "^4.5.0",
+        "lage": "^0.29.0",
+        "rimraf": "^3.0.2",
+        "ts-loader": "^8.1.0",
+        "tslib": "^1.13.0",
+        "typescript": "^4.1.4",
+        "webpack": "^4.43.0",
+        "webpack-bundle-analyzer": "^4.4.1",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.2"
     }
-  },
-  "format": "register",
-  "directories": {
-    "lib": "dist/system"
-  },
-  "dependencies": {
-    "aurelia-framework": "^1.0.0",
-    "chart.js": "^2.0.2"
-  },
-  "devDependencies": {
-    "aurelia-tools": "^0.1.12",
-    "babel-dts-generator": "^0.2.17",
-    "babel-eslint": "^4.1.1",
-    "browser-sync": "^2.9.4",
-    "conventional-changelog": "^0.4.2",
-    "del": "^1.2.1",
-    "event-stream": "^3.3.1",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1",
-    "gulp-bump": "^0.3.1",
-    "gulp-changed": "^1.3.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-eslint": "^1.0.0",
-    "gulp-insert": "^0.4.0",
-    "gulp-less": "^3.0.3",
-    "gulp-minify-css": "^1.2.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-typedoc": "^1.2.1",
-    "gulp-typedoc-extractor": "0.0.8",
-    "gulp-yuidoc": "latest",
-    "gulp-jshint": "latest",
-    "jshint": "^2.0.0",
-    "jshint-stylish": "latest",
-    "jasmine-core": "^2.3.4",
-    "jspm": "^0.16.6",
-    "karma": "^0.13.15",
-    "karma-babel-preprocessor": "^5.2.2",
-    "karma-chrome-launcher": "^0.2.0",
-    "karma-coverage": "^0.5.0",
-    "karma-jasmine": "^0.3.6",
-    "karma-jspm": "^2.0.1",
-    "object.assign": "^4.0.1",
-    "require-dir": "^0.3.0",
-    "run-sequence": "^1.1.2",
-    "through2": "^2.0.0",
-    "vinyl": "^0.5.3",
-    "vinyl-paths": "^1.0.0",
-    "yargs": "^3.21.0"
-  },
-  "aurelia": {
-    "build": {
-      "resources": [
-        "aurelia-chart/elements/chart-element",
-        "aurelia-chart/attributes/chart-attribute"
-      ]
-    }
-  }
 }

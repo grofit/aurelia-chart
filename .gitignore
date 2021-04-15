@@ -1,7 +1,5 @@
-idea
 node_modules
-jspm_packages
-bower_components
-.idea
-.DS_STORE
-build/reports
+dist
+
+packages/*/src/*.css
+packages/**/api.json
