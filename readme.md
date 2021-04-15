@@ -6,6 +6,8 @@ It supports the basic graph types and should work with any custom ones.
 
 ## IMPORTANT CHANGES
 
+The latest version 0.3.0 uses ChartJs 3.x version so syntax needs to match that.
+
 Since version 0.2.0 of this library it has moved over to use the newer chartjs 2.x, which means schemas
 are now slightly different for certain graphs (like pies) and some of the properties have been renamed. 
 So if you need to stick with the old chartjs (1.x) syntax use versions of this library < 0.2.0. Also in
