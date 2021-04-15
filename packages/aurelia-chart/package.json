@@ -39,10 +39,7 @@
         "build-assets:ntv": "copyfiles -u 1 src/**/*.html src/**/*.css dist/native-modules",
         "build-assets:es6": "copyfiles -u 1 src/**/*.html src/**/*.css dist/es2015",
         "prebuild": "rimraf dist",
-        "build": "concurrently \"npm:build-ts:*\" && concurrently \"npm:build-assets:*\"",
-        "doc": "cross-env mkdirp doc && typedoc --json doc/api.json --excludeExternals --name aurelia-mdc-web-docs src/",
-        "update-versions": "ts-node -P ../../tsconfig.scripts.json ../../scripts/update-versions.ts",
-        "publish:latest": "npm publish"
+        "build": "concurrently \"npm:build-ts:*\" && concurrently \"npm:build-assets:*\""
     },
     "peerDependencies": {
         "aurelia-framework": "^1.3.1",
