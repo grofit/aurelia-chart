@@ -1,0 +1,22 @@
+{
+  "name": "aurelia-chart-demo",
+  "version": "0.2.7",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --progress",
+    "prebuild": "rimraf dist",
+    "build:app": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "aurelia-chart": "^0.2.7"
+  },
+  "devDependencies": {
+    "@types/chart.js": "^2.9.32"
+  }
+}
