@@ -68,6 +68,14 @@ export class ChartElement {
     this.refreshChart();
   }
 
+  propertyChanged() {
+    if (this._isSetup && this._isObserving) {
+      this.refreshChart();
+      this._modelObserver.unsubscribe();
+      this.subscribeToChanges();
+    }
+  }
+
   refreshChart = () => {
     this._chartData.data = this._clonedData;
     this._activeChart.update();
