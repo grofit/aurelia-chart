@@ -1,10 +1,10 @@
-import { inject, customElement, useView, bindable, bindingMode } from 'aurelia-framework';
+import { inject, customElement, useView, bindable, bindingMode, PLATFORM } from 'aurelia-framework';
 import { ModelObserver } from '../observers/model-observer';
 import { Chart, ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @customElement('chart')
 @inject(ModelObserver)
-@useView('./chart-element.html')
+@useView(PLATFORM.moduleName('./chart-element.html'))
 export class ChartElement {
   @bindable
   type: ChartType;
