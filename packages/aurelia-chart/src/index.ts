@@ -8,3 +8,5 @@ export function configure(aurelia: FrameworkConfiguration) {
   ]);
   aurelia.container.registerTransient(ModelObserver);
 }
+
+export { ChartElement } from './elements/chart-element';
