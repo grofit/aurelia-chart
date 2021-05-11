@@ -5,14 +5,39 @@ import { Chart, ChartOptions, ChartData, ChartConfiguration, ChartType } from 'c
 @customAttribute('chart')
 @inject(Element, ModelObserver)
 export class ChartAttribute {
+  constructor(private element: HTMLCanvasElement, private modelObserver: ModelObserver) { }
+
+  activeChart?: Chart;
+  private chartData: ChartConfiguration;
+
   @bindable
   type: ChartType;
+  typeChanged() {
+    this.chartData.type = this.type;
+    if (this.isObserving) {
+      this.refreshChart();
+      this.modelObserver.unsubscribe();
+      this.subscribeToChanges();
+    }
+  }
 
   @bindable
   data: ChartData;
+  dataChanged() {
+    this.chartData.data = this.data;
+    if (this.isObserving) {
+      this.refreshChart();
+      this.modelObserver.unsubscribe();
+      this.subscribeToChanges();
+    }
+  }
 
   @bindable
   shouldUpdate: boolean | string;
+
+  private get isObserving() {
+    return this.shouldUpdate === true || this.shouldUpdate === 'true';
+  }
 
   @bindable
   throttle?: number;
@@ -20,64 +45,44 @@ export class ChartAttribute {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   nativeOptions: ChartOptions = {};
 
-  _activeChart: Chart;
-  _isSetup = false;
-  _chartData: ChartConfiguration;
-
-  constructor(private element: HTMLCanvasElement, private _modelObserver: ModelObserver) { }
+  bind() {
+    // prevent initial changed handlers call
+  }
 
   attached() {
-    this.createChart();
-    this._isSetup = true;
-    if (this._isObserving) {
+    this.chartData = {
+      type: this.type,
+      data: this.data,
+      options: this.nativeOptions
+    };
+
+    this.activeChart = new Chart(this.element, this.chartData);
+    this.nativeOptions = this.activeChart.options;
+    this.refreshChart();
+
+    if (this.isObserving) {
       this.subscribeToChanges();
     }
   }
 
   detached() {
-    if (this._isObserving) {
-      this._modelObserver.unsubscribe();
+    if (this.isObserving) {
+      this.modelObserver.unsubscribe();
     }
-    this._activeChart.destroy();
-    this._isSetup = false;
-  }
 
-  get _isObserving() {
-    return this.shouldUpdate === true || this.shouldUpdate === 'true';
-  }
-
-  get _clonedData(): ChartData {
-    return JSON.parse(JSON.stringify(this.data)) as ChartData;
-  }
-
-  createChart() {
-    this._chartData = {
-      type: this.type,
-      data: this._clonedData,
-      options: this.nativeOptions
-    };
-
-    this._activeChart = new Chart(this.element, this._chartData);
-    this.nativeOptions = this._activeChart.options;
-    this.refreshChart();
-  }
-
-  propertyChanged() {
-    if (this._isSetup && this._isObserving) {
-      this.refreshChart();
-      this._modelObserver.unsubscribe();
-      this.subscribeToChanges();
-    }
+    this.activeChart?.destroy();
+    this.activeChart = undefined;
   }
 
   refreshChart = () => {
-    this._chartData.data = this._clonedData;
-    this._activeChart.update();
-    this._activeChart.resize();
+    if (this.activeChart) {
+      this.activeChart.update();
+      this.activeChart.resize();
+    }
   };
 
   subscribeToChanges() {
-    this._modelObserver.throttle = this.throttle ?? 100;
-    this._modelObserver.observe(this.data, this.refreshChart);
+    this.modelObserver.throttle = this.throttle ?? 100;
+    this.modelObserver.observe(this.data, this.refreshChart);
   }
 }

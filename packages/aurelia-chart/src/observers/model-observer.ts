@@ -4,23 +4,23 @@ import { BindingEngine, inject, Disposable, CollectionObserver } from 'aurelia-f
 export class ModelObserver {
   throttle = 100;
 
-  _throttleTimeout?: ReturnType<typeof setTimeout>;
-  _activeSubscriptions: Disposable[] = [];
+  private throttleTimeout?: ReturnType<typeof setTimeout>;
+  private activeSubscriptions: Disposable[] = [];
 
   constructor(private bindingEngine: BindingEngine) { }
 
   observe = (model: unknown, onChange: () => void) => {
     const subscriptions: CollectionObserver['subscribe'][] = [];
-    this._getAllSubscriptions(model, subscriptions);
+    this.getAllSubscriptions(model, subscriptions);
 
     const throttledHandler = () => {
       if (this.throttle <= 0) {
         return onChange();
       }
 
-      if (!this._throttleTimeout) {
-        this._throttleTimeout = setTimeout(() => {
-          this._throttleTimeout = undefined;
+      if (!this.throttleTimeout) {
+        this.throttleTimeout = setTimeout(() => {
+          this.throttleTimeout = undefined;
           onChange();
         }, this.throttle);
       }
@@ -28,19 +28,19 @@ export class ModelObserver {
 
     for (let i = 0; i < subscriptions.length; i++) {
       const outstandingSubscription = subscriptions[i](throttledHandler);
-      this._activeSubscriptions.push(outstandingSubscription);
+      this.activeSubscriptions.push(outstandingSubscription);
     }
   };
 
   unsubscribe = () => {
-    for (let i = 0; i < this._activeSubscriptions.length; i++) {
-      this._activeSubscriptions[i].dispose();
+    for (let i = 0; i < this.activeSubscriptions.length; i++) {
+      this.activeSubscriptions[i].dispose();
     }
 
-    this._activeSubscriptions = [];
+    this.activeSubscriptions = [];
   };
 
-  _getObjectType(obj: unknown) {
+  private getObjectType(obj: unknown) {
     if (obj instanceof Date) {
       return 'date';
     } else if (obj instanceof Array) {
@@ -50,17 +50,17 @@ export class ModelObserver {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _getAllSubscriptions(model: any, subscriptions: CollectionObserver['subscribe'][]) {
+  private getAllSubscriptions(model: any, subscriptions: CollectionObserver['subscribe'][]) {
     if (model instanceof Array) {
       const subscription = this.bindingEngine.collectionObserver(model).subscribe;
       subscriptions.push(subscription);
     }
 
     for (const property in model) {
-      const typeOfData = this._getObjectType(model[property]);
+      const typeOfData = this.getObjectType(model[property]);
       switch (typeOfData) {
         case 'object':
-          this._getAllSubscriptions(model[property], subscriptions);
+          this.getAllSubscriptions(model[property], subscriptions);
           break;
         // case 'array': {
         //   const underlyingArray = model[property]() as unknown[];
