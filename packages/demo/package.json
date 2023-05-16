@@ -1,6 +1,6 @@
 {
   "name": "aurelia-chart-demo",
-  "version": "0.2.7",
+  "version": "0.3.4",
   "private": true,
   "description": "",
   "main": "index.js",
@@ -14,9 +14,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "aurelia-chart": "^0.2.7"
-  },
-  "devDependencies": {
-    "@types/chart.js": "^2.9.32"
+    "aurelia-chart": "^0.3.3"
   }
 }

@@ -12,9 +12,9 @@ module.exports = function ({ production = '', stats = 'errors-only' } = {}) {
     devtool: production ? false : 'source-map',
     output: {
       path: outDir,
-      filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
-      sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
-      chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
+      filename: '[name].[fullhash].js',
+      chunkFilename: '[name].[chunkhash].js',
+      pathinfo: false
     },
     stats: stats,
     resolve: {
@@ -30,15 +30,14 @@ module.exports = function ({ production = '', stats = 'errors-only' } = {}) {
     },
     module: {
       rules: [
-        { test: /\.(woff|woff2)(\?|$)/, loader: 'url-loader?limit=1' },
-        { test: /\.(png|eot|ttf|svg)(\?|$)/, use: { loader: 'url-loader', options: { limit: 1000, esModule: false } } },
+        { test: /\.(woff|woff2|png|eot|ttf|svg)(\?|$)/, type: 'asset' },
         { test: /\.ts$/, loader: 'ts-loader' },
         { test: /\.html$/, loader: 'html-loader' },
         // { test: /\.scss$/i, issuer: /(\.html|empty-entry\.js)$/i, use: scssLoaders },
         // { test: /\.scss$/i, issuer: /\.ts$/i, use: ['style-loader', ...scssLoaders] },
-        { test: /\.css$/i, issuer: [{ not: [{ test: /\.html$/i }] }], use: ['style-loader', 'css-loader'] },
+        { test: /\.css$/i, issuer: [{ not: /\.html$/i }], use: ['style-loader', 'css-loader'] },
         {
-          test: /\.css$/i, issuer: [{ test: /\.html$/i }],
+          test: /\.css$/i, issuer: /\.html$/i,
           // CSS required in templates cannot be extracted safely
           // because Aurelia would try to require it again in runtime
           use: ['css-loader']
