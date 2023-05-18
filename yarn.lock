@@ -835,9 +835,9 @@
   dependencies:
     "aurelia-chart" "^0.3.4"
 
-"aurelia-chart@^0.3.4", "aurelia-chart@file:C:\\Dev\\au\\aurelia-chart\\packages\\aurelia-chart":
+"aurelia-chart@^0.3.5", "aurelia-chart@file:C:\\Dev\\au\\aurelia-chart\\packages\\aurelia-chart":
   "resolved" "file:packages/aurelia-chart"
-  "version" "0.3.4"
+  "version" "0.3.5"
 
 "aurelia-dependency-injection@^1.0.0", "aurelia-dependency-injection@^1.3.0", "aurelia-dependency-injection@>=1.2.0":
   "integrity" "sha512-LnKgpXzKuG2A/YPGeg5OOw8zvkbvDBMRJA9QDCjZlxymsPI98dwggNSQHI8UK+hTIBqOmjjRxqdMoeROo2Gpbw=="
