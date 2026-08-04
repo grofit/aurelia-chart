@@ -43,6 +43,7 @@
     "build:js": "vite build",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "build": "npm run build:js && npm run build:types",
+    "test": "vitest run",
     "publish:au2": "npm publish --tag au2"
   },
   "peerDependencies": {

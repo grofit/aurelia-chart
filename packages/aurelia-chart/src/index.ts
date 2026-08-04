@@ -4,7 +4,6 @@ import {
   ScatterController, Filler, Tooltip, Legend
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
-import { ModelObserver } from './observers/model-observer';
 import { ChartElement } from './elements/chart-element';
 import { ChartAttribute } from './attributes/chart-attribute';
 
@@ -16,7 +15,7 @@ Chart.register(BarController, BarElement, LineController, LineElement, LinearSca
 
 export const ChartConfiguration = {
   register(container: IContainer): IContainer {
-    return container.register(ChartElement, ChartAttribute, ModelObserver);
+    return container.register(ChartElement, ChartAttribute);
   }
 };
 

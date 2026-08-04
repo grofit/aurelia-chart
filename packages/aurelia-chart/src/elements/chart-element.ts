@@ -1,13 +1,11 @@
-import { BindingMode, bindable, customElement, resolve } from 'aurelia';
-import { ModelObserver } from '../observers/model-observer';
+import { BindingMode, bindable, computed, customElement, watch } from 'aurelia';
 import { Chart, ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @customElement('chart')
 export class ChartElement {
-  private modelObserver = resolve(ModelObserver);
-
   activeChart?: Chart;
   private chartData: ChartConfiguration;
+  private refreshTimeout?: ReturnType<typeof setTimeout>;
 
   @bindable
   type: ChartType;
@@ -18,23 +16,16 @@ export class ChartElement {
     this.chartData.type = this.type;
     if (this.isObserving) {
       this.refreshChart();
-      this.modelObserver.unsubscribe();
-      this.subscribeToChanges();
     }
   }
 
   @bindable
-  data: ChartData;
+  data: ChartData = { datasets: [] };
   dataChanged() {
     if (!this.chartData) {
       return;
     }
     this.chartData.data = this.data;
-    if (this.isObserving) {
-      this.refreshChart();
-      this.modelObserver.unsubscribe();
-      this.subscribeToChanges();
-    }
   }
 
   @bindable
@@ -42,6 +33,18 @@ export class ChartElement {
 
   private get isObserving() {
     return this.shouldUpdate === true || this.shouldUpdate === 'true';
+  }
+
+  @computed({ deps: ['data'], deep: true })
+  get observedData(): ChartData | undefined {
+    return this.data == null ? undefined : { ...this.data };
+  }
+
+  @watch('observedData')
+  protected observedDataChanged() {
+    if (this.isObserving) {
+      this.scheduleRefresh();
+    }
   }
 
   @bindable
@@ -63,15 +66,12 @@ export class ChartElement {
     this.activeChart = new Chart(this.canvasElement, this.chartData);
     this.nativeOptions = this.activeChart.options;
     this.refreshChart();
-
-    if (this.isObserving) {
-      this.subscribeToChanges();
-    }
   }
 
   detaching() {
-    if (this.isObserving) {
-      this.modelObserver.unsubscribe();
+    if (this.refreshTimeout !== undefined) {
+      clearTimeout(this.refreshTimeout);
+      this.refreshTimeout = undefined;
     }
 
     this.activeChart?.destroy();
@@ -85,8 +85,20 @@ export class ChartElement {
     }
   };
 
-  subscribeToChanges() {
-    this.modelObserver.throttle = this.throttle ?? 100;
-    this.modelObserver.observe(this.data.datasets, this.refreshChart);
+  private scheduleRefresh() {
+    const throttle = this.throttle ?? 100;
+    if (throttle <= 0) {
+      this.refreshChart();
+      return;
+    }
+
+    if (this.refreshTimeout === undefined) {
+      this.refreshTimeout = setTimeout(() => {
+        this.refreshTimeout = undefined;
+        if (this.isObserving) {
+          this.refreshChart();
+        }
+      }, throttle);
+    }
   }
 }
