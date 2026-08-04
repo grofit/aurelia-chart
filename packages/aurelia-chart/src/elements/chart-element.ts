@@ -1,57 +1,60 @@
-import { inject, customElement, useView, bindable, bindingMode, PLATFORM } from 'aurelia-framework';
-import { ModelObserver } from '../observers/model-observer';
+import { BindingMode, bindable, computed, customElement, watch } from 'aurelia';
 import { Chart, ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @customElement('chart')
-@inject(ModelObserver)
-@useView(PLATFORM.moduleName('./chart-element.html'))
 export class ChartElement {
-  constructor(private modelObserver: ModelObserver) { }
-
   activeChart?: Chart;
-  private chartData: ChartConfiguration;
+  private chartData?: ChartConfiguration;
+  private refreshTimeout?: ReturnType<typeof setTimeout>;
 
   @bindable
-  type: ChartType;
+  type: ChartType = 'line';
   typeChanged() {
+    if (!this.chartData) {
+      return;
+    }
     this.chartData.type = this.type;
     if (this.isObserving) {
       this.refreshChart();
-      this.modelObserver.unsubscribe();
-      this.subscribeToChanges();
     }
   }
 
   @bindable
-  data: ChartData;
+  data: ChartData = { datasets: [] };
   dataChanged() {
-    this.chartData.data = this.data;
-    if (this.isObserving) {
-      this.refreshChart();
-      this.modelObserver.unsubscribe();
-      this.subscribeToChanges();
+    if (!this.chartData) {
+      return;
     }
+    this.chartData.data = this.data;
   }
 
   @bindable
-  shouldUpdate: boolean | string;
+  shouldUpdate: boolean | string = false;
 
   private get isObserving() {
     return this.shouldUpdate === true || this.shouldUpdate === 'true';
   }
 
+  @computed({ deps: ['data'], deep: true })
+  get observedData(): ChartData | undefined {
+    return this.data == null ? undefined : { ...this.data };
+  }
+
+  @watch('observedData')
+  protected observedDataChanged() {
+    if (this.isObserving) {
+      this.scheduleRefresh();
+    }
+  }
+
   @bindable
   throttle?: number;
 
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  @bindable({ mode: BindingMode.twoWay })
   nativeOptions: ChartOptions = {};
 
   @bindable
-  canvasElement: HTMLCanvasElement;
-
-  bind() {
-    // prevent initial changed handlers call
-  }
+  canvasElement?: HTMLCanvasElement;
 
   attached() {
     this.chartData = {
@@ -60,18 +63,15 @@ export class ChartElement {
       options: this.nativeOptions
     };
 
-    this.activeChart = new Chart(this.canvasElement, this.chartData);
+    this.activeChart = new Chart(this.canvasElement!, this.chartData);
     this.nativeOptions = this.activeChart.options;
     this.refreshChart();
-
-    if (this.isObserving) {
-      this.subscribeToChanges();
-    }
   }
 
-  detached() {
-    if (this.isObserving) {
-      this.modelObserver.unsubscribe();
+  detaching() {
+    if (this.refreshTimeout !== undefined) {
+      clearTimeout(this.refreshTimeout);
+      this.refreshTimeout = undefined;
     }
 
     this.activeChart?.destroy();
@@ -85,8 +85,20 @@ export class ChartElement {
     }
   };
 
-  subscribeToChanges() {
-    this.modelObserver.throttle = this.throttle ?? 100;
-    this.modelObserver.observe(this.data.datasets, this.refreshChart);
+  private scheduleRefresh() {
+    const throttle = this.throttle ?? 100;
+    if (throttle <= 0) {
+      this.refreshChart();
+      return;
+    }
+
+    if (this.refreshTimeout === undefined) {
+      this.refreshTimeout = setTimeout(() => {
+        this.refreshTimeout = undefined;
+        if (this.isObserving) {
+          this.refreshChart();
+        }
+      }, throttle);
+    }
   }
 }

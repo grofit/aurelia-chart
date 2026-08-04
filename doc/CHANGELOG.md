@@ -1,3 +1,13 @@
+# 1.0.0 (2026-08-04)
+
+
+### Features
+
+* migrate the library and demo to Aurelia 2
+* publish native ES modules and TypeScript declarations with Vite
+* use the current Chart.js observer and plugin implementation from the desktop application
+
+
 ## [0.3.4](https://github.com/grofit/aurelia-chart/compare/0.3.0...0.3.4) (2023-05-18)
 
 

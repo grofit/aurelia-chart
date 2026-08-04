@@ -1,16 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2015",
-    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "target": "es2022",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "skipLibCheck": true,
     "paths": {
-      "@aurelia-mdc-web/*": ["../*/src"]
-    },
-    "resolveJsonModule": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "newLine": "lf"
+      "aurelia-chart": ["../aurelia-chart/src/index.ts"]
+    }
   },
-  "exclude": []
+  "include": ["src"]
 }

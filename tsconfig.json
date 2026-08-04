@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "baseUrl": "./packages",
+    "rootDir": "./packages",
     "paths": {
-      "aurelia-chart": ["aurelia-chart/src"]
+      "aurelia-chart": [
+        "./packages/aurelia-chart/src/index.ts"
+      ]
     }
   }
 }
