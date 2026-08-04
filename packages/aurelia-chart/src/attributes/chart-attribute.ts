@@ -5,11 +5,11 @@ import { Chart, ChartOptions, ChartData, ChartConfiguration, ChartType } from 'c
 export class ChartAttribute {
   private element = resolve(Element) as HTMLCanvasElement;
   activeChart?: Chart;
-  private chartData: ChartConfiguration;
+  private chartData?: ChartConfiguration;
   private refreshTimeout?: ReturnType<typeof setTimeout>;
 
   @bindable
-  type: ChartType;
+  type: ChartType = 'line';
   typeChanged() {
     if (!this.chartData) {
       return;
@@ -30,7 +30,7 @@ export class ChartAttribute {
   }
 
   @bindable
-  shouldUpdate: boolean | string;
+  shouldUpdate: boolean | string = false;
 
   private get isObserving() {
     return this.shouldUpdate === true || this.shouldUpdate === 'true';

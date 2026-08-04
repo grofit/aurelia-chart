@@ -4,11 +4,11 @@ import { Chart, ChartConfiguration, ChartData, ChartOptions, ChartType } from 'c
 @customElement('chart')
 export class ChartElement {
   activeChart?: Chart;
-  private chartData: ChartConfiguration;
+  private chartData?: ChartConfiguration;
   private refreshTimeout?: ReturnType<typeof setTimeout>;
 
   @bindable
-  type: ChartType;
+  type: ChartType = 'line';
   typeChanged() {
     if (!this.chartData) {
       return;
@@ -29,7 +29,7 @@ export class ChartElement {
   }
 
   @bindable
-  shouldUpdate: boolean | string;
+  shouldUpdate: boolean | string = false;
 
   private get isObserving() {
     return this.shouldUpdate === true || this.shouldUpdate === 'true';
@@ -54,7 +54,7 @@ export class ChartElement {
   nativeOptions: ChartOptions = {};
 
   @bindable
-  canvasElement: HTMLCanvasElement;
+  canvasElement?: HTMLCanvasElement;
 
   attached() {
     this.chartData = {
@@ -63,7 +63,7 @@ export class ChartElement {
       options: this.nativeOptions
     };
 
-    this.activeChart = new Chart(this.canvasElement, this.chartData);
+    this.activeChart = new Chart(this.canvasElement!, this.chartData);
     this.nativeOptions = this.activeChart.options;
     this.refreshChart();
   }
