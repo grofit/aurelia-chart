@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "module": "amd",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "target": "es5",
+    "target": "es2022",
     "lib": [
-      "es2017",
+      "ESNext",
       "dom"
     ],
     "noImplicitAny": true,
@@ -13,16 +13,15 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
-    "declaration": false,
     "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "noEmitHelpers": true,
     "importHelpers": true,
     "skipLibCheck": true,
     "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
     "newLine": "lf",
-    "downlevelIteration": true
+    "isolatedModules": true
   },
   "exclude": [
     ".vscode",

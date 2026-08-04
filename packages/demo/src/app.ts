@@ -6,8 +6,8 @@ export class App {
     this.resetLineData();
   }
 
-  DynamicDoughnutData: ChartData;
-  SimpleLineData: ChartData;
+  DynamicDoughnutData!: ChartData;
+  SimpleLineData!: ChartData;
 
   resetPieData() {
     this.DynamicDoughnutData = {

@@ -1,19 +1,17 @@
 {
   "name": "aurelia-chart-demo",
-  "version": "0.3.4",
   "private": true,
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "webpack-dev-server --progress",
-    "prebuild": "rimraf dist",
-    "build:app": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "vite",
+    "build": "vite build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "aurelia-chart": "^0.3.5"
+    "aurelia": ">=2.0.0-rc.1",
+    "aurelia-chart": "*",
+    "chart.js": "^4.5.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-annotation": "^3.1.0",
+    "date-fns": "^4.4.0"
   }
 }

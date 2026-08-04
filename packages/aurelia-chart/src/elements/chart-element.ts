@@ -1,12 +1,10 @@
-import { inject, customElement, useView, bindable, bindingMode, PLATFORM } from 'aurelia-framework';
+import { BindingMode, bindable, customElement, resolve } from 'aurelia';
 import { ModelObserver } from '../observers/model-observer';
 import { Chart, ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @customElement('chart')
-@inject(ModelObserver)
-@useView(PLATFORM.moduleName('./chart-element.html'))
 export class ChartElement {
-  constructor(private modelObserver: ModelObserver) { }
+  private modelObserver = resolve(ModelObserver);
 
   activeChart?: Chart;
   private chartData: ChartConfiguration;
@@ -14,6 +12,9 @@ export class ChartElement {
   @bindable
   type: ChartType;
   typeChanged() {
+    if (!this.chartData) {
+      return;
+    }
     this.chartData.type = this.type;
     if (this.isObserving) {
       this.refreshChart();
@@ -25,6 +26,9 @@ export class ChartElement {
   @bindable
   data: ChartData;
   dataChanged() {
+    if (!this.chartData) {
+      return;
+    }
     this.chartData.data = this.data;
     if (this.isObserving) {
       this.refreshChart();
@@ -43,15 +47,11 @@ export class ChartElement {
   @bindable
   throttle?: number;
 
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  @bindable({ mode: BindingMode.twoWay })
   nativeOptions: ChartOptions = {};
 
   @bindable
   canvasElement: HTMLCanvasElement;
-
-  bind() {
-    // prevent initial changed handlers call
-  }
 
   attached() {
     this.chartData = {
@@ -69,7 +69,7 @@ export class ChartElement {
     }
   }
 
-  detached() {
+  detaching() {
     if (this.isObserving) {
       this.modelObserver.unsubscribe();
     }

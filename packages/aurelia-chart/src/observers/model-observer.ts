@@ -1,16 +1,29 @@
-import { BindingEngine, inject, Disposable, CollectionObserver } from 'aurelia-framework';
+import { IObserverLocator, resolve, transient } from 'aurelia';
 
-@inject(BindingEngine)
+type Subscribable = { subscribe(subscriber: ChangeSubscriber): void; unsubscribe(subscriber: ChangeSubscriber): void };
+
+class ChangeSubscriber {
+  constructor(private onChange: () => void) { }
+
+  handleChange() {
+    this.onChange();
+  }
+
+  handleCollectionChange() {
+    this.onChange();
+  }
+}
+
+@transient()
 export class ModelObserver {
   throttle = 100;
 
   private throttleTimeout?: ReturnType<typeof setTimeout>;
-  private activeSubscriptions: Disposable[] = [];
-
-  constructor(private bindingEngine: BindingEngine) { }
+  private activeSubscriptions: { observer: Subscribable; subscriber: ChangeSubscriber }[] = [];
+  private observerLocator = resolve(IObserverLocator);
 
   observe = (model: unknown, onChange: () => void) => {
-    const subscriptions: CollectionObserver['subscribe'][] = [];
+    const subscriptions: Subscribable[] = [];
     this.getAllSubscriptions(model, subscriptions);
 
     const throttledHandler = () => {
@@ -26,15 +39,17 @@ export class ModelObserver {
       }
     };
 
+    const subscriber = new ChangeSubscriber(throttledHandler);
     for (let i = 0; i < subscriptions.length; i++) {
-      const outstandingSubscription = subscriptions[i](throttledHandler);
-      this.activeSubscriptions.push(outstandingSubscription);
+      subscriptions[i].subscribe(subscriber);
+      this.activeSubscriptions.push({ observer: subscriptions[i], subscriber });
     }
   };
 
   unsubscribe = () => {
     for (let i = 0; i < this.activeSubscriptions.length; i++) {
-      this.activeSubscriptions[i].dispose();
+      const { observer, subscriber } = this.activeSubscriptions[i];
+      observer.unsubscribe(subscriber);
     }
 
     this.activeSubscriptions = [];
@@ -49,10 +64,13 @@ export class ModelObserver {
     return typeof obj;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getAllSubscriptions(model: any, subscriptions: CollectionObserver['subscribe'][]) {
+  private getAllSubscriptions(model: any, subscriptions: Subscribable[]) {
+    if (!model) {
+      return;
+    }
+
     if (model instanceof Array) {
-      const subscription = this.bindingEngine.collectionObserver(model).subscribe;
+      const subscription = this.observerLocator.getArrayObserver(model);
       subscriptions.push(subscription);
     }
 
@@ -73,10 +91,8 @@ export class ModelObserver {
         //   break;
         // }
         default: {
-          const subscription = this.bindingEngine.propertyObserver(model, property).subscribe;
-          if (subscription) {
-            subscriptions.push(subscription);
-          }
+          const subscription = this.observerLocator.getObserver(model, property);
+          subscriptions.push(subscription);
           break;
         }
       }

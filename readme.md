@@ -1,64 +1,27 @@
-# Aurelia-Chart
+# Aurelia Chart
 
-A simple binding to let aurelia and chartjs (2.x) come together for the greater good.
+Aurelia 2 elements and attributes for [Chart.js](https://www.chartjs.org/).
 
-It supports the basic graph types and should work with any custom ones.
-
-## IMPORTANT CHANGES
-
-The latest version 0.3.0 uses ChartJs 3.x version so syntax needs to match that.
-
-Since version 0.2.0 of this library it has moved over to use the newer chartjs 2.x, which means schemas
-are now slightly different for certain graphs (like pies) and some of the properties have been renamed. 
-So if you need to stick with the old chartjs (1.x) syntax use versions of this library < 0.2.0. Also in
-the latest chartjs the type syntax is lower case now, so you no longer need to worry about caps.
-
-## Install
-
-### JSPM
-use JSPM:
+## Installation
 
 ```sh
-jspm install npm:aurelia-chart
+npm install aurelia-chart chart.js chartjs-adapter-date-fns chartjs-plugin-annotation date-fns
 ```
 
-then include the plugin in aurelia
+## Configuration
 
-```sh
-aurelia.use.plugin("aurelia-chart");
+```ts
+import Aurelia from 'aurelia';
+import { ChartConfiguration } from 'aurelia-chart';
+import { App } from './app';
+
+Aurelia
+  .register(ChartConfiguration)
+  .app(App)
+  .start();
 ```
 
-### Webpack
-use npm to install Aurelia-Chart
-
-```sh
-npm install aurelia-chart --save
-```
-
-then modify your `package.json` to include the Aurelia-Chart resources
-```javascript
-dependencies {
- ...
-},
-"aurelia": {
-    "build": {
-      "resources": [
-        "aurelia-chart/elements/chart-element",
-        "aurelia-chart/attributes/chart-attribute"
-      ]
-    }
-}
-```
-
-## Example
-
-After MANY hours of soul destroying asking of questions and finding out system.js seems to have a weird bug,
-there is now a space age example available for you to see:
-
-[View JSPM Example](https://rawgit.com/grofit/aurelia-chart/master/examples/jspm/index.html)
-[View Webpack Example](https://rawgit.com/grofit/aurelia-chart/master/examples/webpack/index.html)
-
-You can see the code and everything in the examples folder!
+`ChartConfiguration` registers the `<chart>` custom element, the `chart` custom attribute, and the model observer used for dynamic updates. The package registers the Bar, Line, Scatter, and time-series Chart.js components plus the annotation plugin. Register any additional Chart.js controllers required by your application.
 
 ## Quirks
 
@@ -94,22 +57,23 @@ Finally there is also support for attributes directly on the canvas:
 
 So you can have finer grained control over the element yourself if needed.
 
-The chartjs specific options can be found here:
-
-http://www.chartjs.org/docs/#line-chart-chart-options
-
-http://www.chartjs.org/docs/#bar-chart-chart-options
-
-http://www.chartjs.org/docs/#radar-chart-chart-options
-
-http://www.chartjs.org/docs/#polar-area-chart-chart-options
-
-http://www.chartjs.org/docs/#doughnut-pie-chart-chart-options
+Chart.js configuration options are documented in the [Chart.js documentation](https://www.chartjs.org/docs/latest/).
 
 The available attributes are:
 
-* **type** - The type of chart you want, i.e. Pie, Bar, Doughnut etc, make sure the caps matches or it will blow up
+* **type** - The Chart.js chart type, such as `bar`, `line`, or `scatter`
 * **data** - The data you want to put in, should match the desired format of data in the ChartJS documentation, observables will be translated for you
 * **should-update** - This option tells the binding to scan for observables in the data and refresh the chart when they change
 * **throttle** - This option tells the binding to throttle updates by the desired amount, defaults to 100
 * **native-options** - The options based upon the ChartJS options documented above, there are a couple of unique ones which we use
+
+## Development
+
+```sh
+npm install
+npm run build
+npm run lint
+npm start
+```
+
+`npm start` runs the Aurelia 2 demo with Vite.
