@@ -1,0 +1,149 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - id: version
+        shell: bash
+        run: |
+          version=$(node -p "require('./packages/aurelia-chart/package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - run: npm run lint
+
+      - run: npm test
+
+      - run: npm run build -w packages/aurelia-chart
+
+      - run: npm run build -w packages/demo
+
+      - run: npm pack --dry-run -w packages/aurelia-chart
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: packages/demo/dist
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - run: node --version && npm --version
+
+      - run: npm ci
+
+      - run: npm run build -w packages/aurelia-chart
+
+      - name: Publish package
+        shell: bash
+        run: |
+          version="${{ needs.build.outputs.version }}"
+
+          if npm view "aurelia-chart@$version" version >/dev/null 2>&1; then
+            echo "aurelia-chart@$version already exists; skipping publish."
+          else
+            npm publish ./packages/aurelia-chart --access public
+          fi
+
+  deploy-pages:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+
+  github-release:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - publish
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v${{ needs.build.outputs.version }}"
+
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; skipping."
+            exit 0
+          fi
+
+          previous_tag=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || true)
+
+          {
+            echo "## What's Changed"
+            echo
+
+            if [ -n "$previous_tag" ]; then
+              git log --no-merges --pretty=format:'- %s (`%h`)' "$previous_tag..$GITHUB_SHA" \
+                | grep -E -- '^- (feat|fix|perf|revert)(\([^)]*\))?!?: ' || true
+              echo
+              echo
+              echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/compare/$previous_tag...$tag"
+            else
+              git log --no-merges --pretty=format:'- %s (`%h`)' "$GITHUB_SHA" \
+                | grep -E -- '^- (feat|fix|perf|revert)(\([^)]*\))?!?: ' || true
+              echo
+            fi
+          } > release-notes.md
+
+          if git rev-parse "$tag" >/dev/null 2>&1; then
+            echo "Tag $tag already exists; creating release for existing tag."
+            gh release create "$tag" --notes-file release-notes.md
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --notes-file release-notes.md
+          fi

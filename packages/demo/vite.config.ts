@@ -22,6 +22,7 @@ function decoratorPreset(options: Record<string, unknown>) {
 }
 
 export default defineConfig({
+  base: process.env.GITHUB_ACTIONS ? '/aurelia-chart/' : '/',
   resolve: {
     alias: [
       { find: /^aurelia-chart$/, replacement: path.resolve(import.meta.dirname, '../aurelia-chart/src/index.ts') },
