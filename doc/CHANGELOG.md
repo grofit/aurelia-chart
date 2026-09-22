@@ -1,3 +1,13 @@
+## 2.0.1 (2026-09-22)
+
+
+### Maintenance
+
+* update Aurelia 2 and the development toolchain dependencies
+* adapt the demo build to the current Rolldown Babel preset API
+* exclude TypeScript from automated dependency updates
+
+
 # 1.0.0 (2026-08-04)
 
 

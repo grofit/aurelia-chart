@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import aurelia from '@aurelia/vite-plugin';
-import babel from '@rolldown/plugin-babel';
+import babel, { defineRolldownBabelPreset } from '@rolldown/plugin-babel';
 import path from 'path';
 
 const aureliaResourceInclude = [
@@ -8,18 +8,16 @@ const aureliaResourceInclude = [
   path.posix.join(path.resolve(import.meta.dirname, '../aurelia-chart/src').replaceAll('\\', '/'), '**/*.{ts,js,html}'),
 ];
 
-function decoratorPreset(options: Record<string, unknown>) {
-  return {
-    preset: () => ({
-      plugins: [['@babel/plugin-proposal-decorators', options]],
-    }),
-    rolldown: {
-      filter: {
-        code: '@',
-      },
+const decoratorPreset = defineRolldownBabelPreset({
+  preset: () => ({
+    plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]],
+  }),
+  rolldown: {
+    filter: {
+      code: '@',
     },
-  };
-}
+  },
+});
 
 export default defineConfig({
   resolve: {
@@ -33,6 +31,6 @@ export default defineConfig({
   },
   plugins: [
     aurelia({ useDev: true, include: aureliaResourceInclude }),
-    babel({ presets: [decoratorPreset({ version: '2023-11' })] }),
+    babel({ presets: [decoratorPreset] }),
   ],
 });
